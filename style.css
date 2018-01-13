@@ -1,0 +1,33 @@
+#content {
+    max-width: 976px;
+    margin: auto;
+}
+
+.grid--8 {
+    width: 160px;
+}
+
+.square {
+    display: inline-block;
+    height: 20px;
+}
+
+.square--8 {
+    width: 20px;
+}
+
+.square--blank {
+    background-color: black;
+}
+
+.square--selected {
+    background-color: yellow;
+}
+
+.clue {
+    cursor: pointer;
+}
+
+.clue:hover {
+    color: blue;
+}
