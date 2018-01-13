@@ -16,7 +16,7 @@ export default class Clue extends React.Component<ClueProps, {}> {
     render(): JSX.Element {
         return (
             <li className="clue" onClick={this.selectClue}>
-                {this.props.index}. {this.props.clue.clue} ({this.props.clue.length})
+                {this.props.index + 1}. {this.props.clue.clue} ({this.props.clue.length})
             </li>
         );
     }
