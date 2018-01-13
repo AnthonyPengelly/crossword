@@ -8,6 +8,7 @@ import Clues from "./clues";
 
 interface CrosswordProps {
     crossword: CrosswordModel;
+    returnToList: () => void;
 }
 
 interface CrosswordState {
@@ -33,7 +34,8 @@ export default class Crossword extends React.Component<CrosswordProps, Crossword
             />
         ));
         return (
-            <div id="content">
+            <div>
+                <div className="clickable" onClick={this.props.returnToList}>Return to list</div>
                 <h1>{this.props.crossword.name}</h1>
                 <div className={gridClasses}>{grid}</div>
                 <Clues clues={this.props.crossword.clues} selectClue={this.selectClue} />

@@ -24,10 +24,10 @@
     background-color: yellow;
 }
 
-.clue {
+.clickable {
     cursor: pointer;
 }
 
-.clue:hover {
+.clickable:hover {
     color: blue;
 }

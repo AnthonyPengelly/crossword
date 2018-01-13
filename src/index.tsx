@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import CrosswordList from "./components/crosswordList";
+import Home from "./components/home";
 
 ReactDOM.render(
-    <CrosswordList />,
+    <Home />,
     document.getElementById("react-body")
 );
