@@ -7,4 +7,6 @@ interface Clue {
     direction: Direction;
 }
 
+export type NumberedClue = Clue & {clueNumber: number};
+
 export default Clue;

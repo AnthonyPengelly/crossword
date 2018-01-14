@@ -1,18 +1,19 @@
 import * as React from "react";
-import CrosswordModel from "../models/crossword";
+import {NumberedCrossword} from "../models/crossword";
 import CrosswordList from "../components/crosswordList";
 import Crossword from "../components/crossword";
 import testCrossword from "../testCrossword";
+import {mapCrosswordToNumberedCrossword} from "../helpers/crosswordNumberer";
 
 interface HomeState {
-    crosswords: CrosswordModel[];
-    currentCrossword?: CrosswordModel;
+    crosswords: NumberedCrossword[];
+    currentCrossword?: NumberedCrossword;
 }
 
 export default class Home extends React.Component<{}, HomeState> {
     constructor(props: {}) {
         super(props);
-        this.state = {crosswords: [testCrossword]};
+        this.state = {crosswords: [mapCrosswordToNumberedCrossword(testCrossword)]};
         this.returnToList = this.returnToList.bind(this);
         this.openCrossword = this.openCrossword.bind(this);
     }
@@ -32,7 +33,7 @@ export default class Home extends React.Component<{}, HomeState> {
         this.setState({currentCrossword: undefined});
     }
 
-    openCrossword(crossword: CrosswordModel) {
+    openCrossword(crossword: NumberedCrossword) {
         this.setState({currentCrossword: crossword});
     }
 }

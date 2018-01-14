@@ -1,10 +1,9 @@
 import * as React from "react";
-import ClueModel from "../models/clue";
+import {default as ClueModel, NumberedClue} from "../models/clue";
 
 interface ClueProps {
-    clue: ClueModel;
+    clue: NumberedClue;
     selectClue: (clue: ClueModel) => void;
-    index: number;
 }
 
 export default class Clue extends React.Component<ClueProps, {}> {
@@ -16,7 +15,7 @@ export default class Clue extends React.Component<ClueProps, {}> {
     render(): JSX.Element {
         return (
             <li className="clue clickable" onClick={this.selectClue}>
-                {this.props.index + 1}. {this.props.clue.clue} ({this.props.clue.length})
+                {this.props.clue.clueNumber}. {this.props.clue.clue} ({this.props.clue.length})
             </li>
         );
     }

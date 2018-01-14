@@ -1,11 +1,11 @@
 import * as React from "react";
-import ClueModel from "../models/clue";
+import {NumberedClue} from "../models/clue";
 import Direction from "../models/direction";
 import Clue from "../components/clue";
 
 interface CluesProps {
-    clues: ClueModel[];
-    selectClue: (clue: ClueModel) => void;
+    clues: NumberedClue[];
+    selectClue: (clue: NumberedClue) => void;
 }
 
 export default class Clues extends React.Component<CluesProps, {}> {
@@ -13,7 +13,7 @@ export default class Clues extends React.Component<CluesProps, {}> {
         const acrossClues = this.props.clues.filter(clue => clue.direction === Direction.Across);
         const downClues = this.props.clues.filter(clue => clue.direction === Direction.Down);
         return (
-            <div>
+            <div className="clues">
                 <h2>Across</h2>
                 <ul>{this.mapCluesModelsToClueComponents(acrossClues)}</ul>
                 <h2>Down</h2>
@@ -22,9 +22,9 @@ export default class Clues extends React.Component<CluesProps, {}> {
         );
     }
 
-    mapCluesModelsToClueComponents(clues: ClueModel[]): JSX.Element[] {
+    mapCluesModelsToClueComponents(clues: NumberedClue[]): JSX.Element[] {
         return clues.map((clue, index) => (
-            <Clue key={index} index={index} selectClue={this.props.selectClue} clue={clue} />
+            <Clue key={index} selectClue={this.props.selectClue} clue={clue} />
         ));
     }
 }

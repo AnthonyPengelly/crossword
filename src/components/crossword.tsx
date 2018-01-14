@@ -1,13 +1,14 @@
 import * as React from "react";
-import CrosswordModel from "../models/crossword";
+import {NumberedCrossword} from "../models/crossword";
 import SquareModel from "../models/square";
-import ClueModel from "../models/clue";
+import {NumberedClue} from "../models/clue";
 import Direction from "../models/direction";
+import Grid from "./grid";
 import Square from "./square";
 import Clues from "./clues";
 
 interface CrosswordProps {
-    crossword: CrosswordModel;
+    crossword: NumberedCrossword;
     returnToList: () => void;
 }
 
@@ -23,27 +24,17 @@ export default class Crossword extends React.Component<CrosswordProps, Crossword
     }
     
     render(): JSX.Element {
-        const squareClasses = "square square--" + this.props.crossword.size;
-        const gridClasses = "grid grid--" + this.props.crossword.size;
-        const grid = this.props.crossword.squares.map((square, index) => (
-            <Square
-                key={index}
-                square={square}
-                isSelected={this.state.selectedIndices.indexOf(index) !== -1}
-                className={squareClasses}
-            />
-        ));
         return (
             <div>
                 <div className="clickable" onClick={this.props.returnToList}>Return to list</div>
                 <h1>{this.props.crossword.name}</h1>
-                <div className={gridClasses}>{grid}</div>
+                <Grid crossword={this.props.crossword} selectedIndices={this.state.selectedIndices} />
                 <Clues clues={this.props.crossword.clues} selectClue={this.selectClue} />
             </div>
         );
     }
 
-    selectClue(clue: ClueModel): void {
+    selectClue(clue: NumberedClue): void {
         const indices: number[] = [];
         for(let i = 0; i < clue.length; i++) {
             if (clue.direction === Direction.Across) {

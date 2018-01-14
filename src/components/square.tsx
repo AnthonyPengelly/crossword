@@ -1,8 +1,8 @@
 import * as React from "react";
-import SquareModel from "../models/square";
+import {NumberedSquare} from "../models/square";
 
 interface SquareProps {
-    square: SquareModel;
+    square: NumberedSquare;
     isSelected: boolean;
     className: string;
 }
@@ -14,6 +14,7 @@ export default class Square extends React.Component<SquareProps, {}> {
             + (this.props.isSelected ? " square--selected" : "");
         return (
             <div className={className}>
+                <div className="clue-number">{this.props.square.clueNumber}</div>
                 {this.props.square.letter !== undefined ? this.props.square.letter : ""}
             </div>
         );

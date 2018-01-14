@@ -4,16 +4,36 @@
 }
 
 .grid--8 {
-    width: 160px;
+    width: 320px;
+}
+
+.grid {
+    vertical-align: top;
+    display: inline-block;
+    padding-right: 16px;
+    padding-top: 32px;
 }
 
 .square {
     display: inline-block;
-    height: 20px;
+    height: 38px;
+    line-height: 38px;
+    position: relative;
+    text-align: center;
+    vertical-align: top;
+    border: 1px solid black;
+}
+
+.clue-number {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    font-size: 10px;
+    line-height: 12px;
 }
 
 .square--8 {
-    width: 20px;
+    width: 38px;
 }
 
 .square--blank {
@@ -22,6 +42,10 @@
 
 .square--selected {
     background-color: yellow;
+}
+
+.clues {
+    display: inline-block;
 }
 
 .clickable {

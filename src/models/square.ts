@@ -3,4 +3,6 @@ interface Square {
     letter?: string;
 }
 
+export type NumberedSquare = Square & {clueNumber?: number}
+
 export default Square;
