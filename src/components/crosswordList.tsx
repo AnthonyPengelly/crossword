@@ -5,6 +5,7 @@ import testCrossword from "../testCrossword";
 interface CrosswordListProps {
     crosswords: Crossword[];
     openCrossword: (crossword: Crossword) => void;
+    openCrosswordCreator: () => void;
 }
 
 export default class CrosswordList extends React.Component<CrosswordListProps, {}> {
@@ -23,6 +24,9 @@ export default class CrosswordList extends React.Component<CrosswordListProps, {
         ));
         return (
             <div>
+                <div className="clickable" onClick={this.props.openCrosswordCreator}>
+                    Create Crossword
+                </div>
                 <h1>Crosswords</h1>
                 <ul>
                     {crosswordList}
