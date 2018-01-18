@@ -28,7 +28,7 @@ export default class Crossword extends React.Component<CrosswordProps, Crossword
             <div>
                 <div className="clickable" onClick={this.props.returnToList}>Return to list</div>
                 <h1>{this.props.crossword.name}</h1>
-                <Grid crossword={this.props.crossword} selectedIndices={this.state.selectedIndices} />
+                <Grid crossword={this.props.crossword} selectedIndices={this.state.selectedIndices} onSquareClick={()=>{}} />
                 <Clues clues={this.props.crossword.clues} selectClue={this.selectClue} />
             </div>
         );

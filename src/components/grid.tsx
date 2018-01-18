@@ -9,6 +9,7 @@ import Clues from "./clues";
 interface GridProps {
     crossword: CrosswordModel;
     selectedIndices: number[];
+    onSquareClick: (index: number) => void;
 }
 
 export default class Grid extends React.Component<GridProps, {}> {
@@ -21,6 +22,7 @@ export default class Grid extends React.Component<GridProps, {}> {
                 square={square}
                 isSelected={this.props.selectedIndices.indexOf(index) !== -1}
                 className={squareClasses}
+                onSquareClick={() => this.props.onSquareClick(index)}
             />
         ));
         return (

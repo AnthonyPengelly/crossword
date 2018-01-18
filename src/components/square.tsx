@@ -5,6 +5,7 @@ interface SquareProps {
     square: NumberedSquare;
     isSelected: boolean;
     className: string;
+    onSquareClick: () => void;
 }
 
 export default class Square extends React.Component<SquareProps, {}> {
@@ -13,7 +14,7 @@ export default class Square extends React.Component<SquareProps, {}> {
             + (this.props.square.isBlank ? " square--blank" : "")
             + (this.props.isSelected ? " square--selected" : "");
         return (
-            <div className={className}>
+            <div className={className} onClick={() => this.props.onSquareClick()}>
                 <div className="clue-number">{this.props.square.clueNumber}</div>
                 {this.props.square.letter !== undefined ? this.props.square.letter : ""}
             </div>

@@ -18,8 +18,8 @@ export function mapCrosswordToNumberedCrossword(crossword: Crossword): NumberedC
 
 function mapCluesToNumberedClues(clues: Clue[]): NumberedClue[] {
         const sortedClues = clues.sort((a, b) => a.startingIndex - b.startingIndex);
-        let currentIndex = 0;
-        let currentClueNumber = 1;
+        let currentIndex = -1;
+        let currentClueNumber = 0;
         return sortedClues.map(clue => {
             if (clue.startingIndex > currentIndex) {
                 currentClueNumber++;
