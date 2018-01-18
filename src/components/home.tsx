@@ -45,7 +45,8 @@ export default class Home extends React.Component<{}, HomeState> {
     createCrossword(crossword: NumberedCrossword): void {
         this.state.crosswords.push(crossword);
         this.setState({
-            currentCrossword: undefined
+            currentCrossword: undefined,
+            createCrossword: false
         });
     }
 

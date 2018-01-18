@@ -27,8 +27,9 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
         super(props);
         this.state = {crossword: undefined, selectedIndices: []};
         this.createBlankCrossword = this.createBlankCrossword.bind(this);
+        this.completeCrossword = this.completeCrossword.bind(this);
         this.selectSquare = this.selectSquare.bind(this);
-        this.highlightClue = this.highlightClue.bind(this);
+        this.selectClue = this.selectClue.bind(this);
         this.closeClueCreator = this.closeClueCreator.bind(this);
         this.changeDirection = this.changeDirection.bind(this);
         this.updateClue = this.updateClue.bind(this);
@@ -53,7 +54,7 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
                 clueEditor = (
                     <ClueEditor
                         clue={this.state.currentClue}
-                        answer={this.getAnswerForCurrentClue()}
+                        answer={this.getAnswerForClue(this.state.currentClue)}
                         updateClue={this.updateClue}
                         changeDirection={this.changeDirection}
                         closeClueCreator={this.closeClueCreator}
@@ -64,8 +65,9 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
                 <React.Fragment>
                     <h2>{this.state.crossword.name}</h2>
                     <Grid crossword={this.state.crossword} selectedIndices={[]} onSquareClick={this.selectSquare} />
-                    <Clues clues={this.state.crossword.clues} selectClue={this.highlightClue} />
+                    <Clues clues={this.state.crossword.clues} selectClue={this.selectClue} />
                     {clueEditor}
+                    <button onClick={this.completeCrossword}>Complete</button>
                 </React.Fragment>
             );
         }
@@ -82,6 +84,15 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
             squares: squares,
             clues: []
         }});
+    }
+
+    completeCrossword(): void {
+        this.state.crossword.squares.forEach(square => {
+            if (!square.letter) {
+                square.isBlank = true;
+            }
+        });
+        this.props.createCrossword(this.state.crossword);
     }
 
     closeClueCreator(): void {
@@ -106,10 +117,7 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
     }
 
     updateClue(newClue: Clue, answer: string): void {
-        // Include answers
-        console.log("Should add the following clue:");
-        console.log(newClue); 
-        console.log(answer);
+        this.writeAnswerFromClueToGrid(answer, newClue);
         const indexOfClue = this.state.crossword.clues.findIndex((clue) => 
             clue.startingIndex === newClue.startingIndex && clue.direction === newClue.direction);
         if (indexOfClue !== -1) {
@@ -121,16 +129,13 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
         this.resetState();
     }
 
-    highlightClue(clue: NumberedClue): void {
-        const indices: number[] = [];
-        for(let i = 0; i < clue.length; i++) {
-            if (clue.direction === Direction.Across) {
-                indices.push(clue.startingIndex + i);
-            } else {
-                indices.push(clue.startingIndex + (i * this.state.crossword.size));
-            }
-        }
-        this.setState({selectedIndices: indices});
+    selectClue(clue: NumberedClue): void {
+        this.setState({selectedSquareIndex: clue.startingIndex, currentClue: clue});
+    }
+
+    getAnswerForClue(clue: Clue): string {
+        const squares = this.getSquaresForClue(clue);
+        return squares.map(square => square.letter).join("");
     }
 
     getClueForSquareAndDirection(squareIndex: number, direction: Direction): Clue | undefined {
@@ -140,9 +145,23 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
         return !!clue ? clue : undefined;
     }
 
-    getAnswerForCurrentClue(): string {
-        // TODO
-        return "";
+    writeAnswerFromClueToGrid(answer: string, clue: Clue): void {
+        const squares = this.getSquaresForClue(clue);
+        for(let i = 0; i < clue.length; i++) {
+            squares[i].letter = answer[i];
+        }
+    }
+
+    getSquaresForClue(clue: Clue): SquareModel[] {
+        let squares: SquareModel[] = [];
+        for(let i = 0; i < clue.length; i++) {
+            if (clue.direction === Direction.Across) {
+                squares.push(this.state.crossword.squares[clue.startingIndex + i]);
+            } else {
+                squares.push(this.state.crossword.squares[clue.startingIndex + (i * this.state.crossword.size)]);
+            }
+        }
+        return squares;
     }
 
     resetState(): void {
