@@ -9,6 +9,7 @@ import ClueEditor from "./clueEditor";
 import CrosswordDetailsInput from "./crosswordDetailsInput";
 import Crossword from "./crossword";
 import {mapCrosswordToNumberedCrossword} from "../helpers/crosswordNumberer";
+import {getSquaresForClue} from "../helpers/answerHelper";
 
 interface CrosswordCreatorProps {
     returnToList: () => void;
@@ -57,7 +58,7 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
                         answer={this.getAnswerForClue(this.state.currentClue)}
                         updateClue={this.updateClue}
                         changeDirection={this.changeDirection}
-                        closeClueCreator={this.closeClueCreator}
+                        closeClueEditor={this.closeClueCreator}
                     />
                 );
             }
@@ -134,7 +135,7 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
     }
 
     getAnswerForClue(clue: Clue): string {
-        const squares = this.getSquaresForClue(clue);
+        const squares = getSquaresForClue(clue, this.state.crossword);
         return squares.map(square => square.letter).join("");
     }
 
@@ -146,22 +147,10 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
     }
 
     writeAnswerFromClueToGrid(answer: string, clue: Clue): void {
-        const squares = this.getSquaresForClue(clue);
+        const squares = getSquaresForClue(clue, this.state.crossword);
         for(let i = 0; i < clue.length; i++) {
-            squares[i].letter = answer[i];
+            squares[i].letter = answer[i].toUpperCase();
         }
-    }
-
-    getSquaresForClue(clue: Clue): SquareModel[] {
-        let squares: SquareModel[] = [];
-        for(let i = 0; i < clue.length; i++) {
-            if (clue.direction === Direction.Across) {
-                squares.push(this.state.crossword.squares[clue.startingIndex + i]);
-            } else {
-                squares.push(this.state.crossword.squares[clue.startingIndex + (i * this.state.crossword.size)]);
-            }
-        }
-        return squares;
     }
 
     resetState(): void {

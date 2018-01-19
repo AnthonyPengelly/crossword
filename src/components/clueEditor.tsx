@@ -7,7 +7,7 @@ interface ClueEditorProps {
     answer: string;
     updateClue: (clue: ClueModel, answer: string) => void;
     changeDirection: (direction: Direction) => void;
-    closeClueCreator: () => void;
+    closeClueEditor: () => void;
 }
 
 interface ClueEditorState {
@@ -31,8 +31,8 @@ export default class ClueEditor extends React.Component<ClueEditorProps, ClueEdi
 
     render(): JSX.Element {
         return (
-            <div className="clue-editor">
-                <div className="clickable" onClick={this.props.closeClueCreator}>Close</div>
+            <div className="clue-dialog clue-editor">
+                <div className="clickable" onClick={this.props.closeClueEditor}>Close</div>
                 <h3>Clue Editor</h3>
                 <div>Direction: {this.props.clue.direction === 0 ? "Across" : "Down"}</div>
                 <button onClick={this.changeDirection}>Change Direction</button>

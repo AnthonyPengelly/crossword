@@ -5,6 +5,7 @@ import Crossword from "../components/crossword";
 import CrosswordCreator from "../components/crosswordCreator";
 import testCrossword from "../testCrossword";
 import {mapCrosswordToNumberedCrossword} from "../helpers/crosswordNumberer";
+import { NumberedClue } from "../models/clue";
 
 interface HomeState {
     crosswords: NumberedCrossword[];
@@ -35,7 +36,7 @@ export default class Home extends React.Component<{}, HomeState> {
     }
 
     openCrossword(crossword: NumberedCrossword) {
-        this.setState({currentCrossword: crossword});
+        this.setState({currentCrossword: this.getEmptyCrosswordFromCrossword(crossword)});
     }
 
     openCrosswordCreator() {
@@ -63,5 +64,13 @@ export default class Home extends React.Component<{}, HomeState> {
                 openCrossword={this.openCrossword}
                 openCrosswordCreator={this.openCrosswordCreator} 
             />);
+    }
+
+    getEmptyCrosswordFromCrossword(crossword: NumberedCrossword): NumberedCrossword {
+        crossword.squares = crossword.squares.map(square => {return {
+            isBlank: square.isBlank, 
+            clueNumber: square.clueNumber
+        }});
+        return crossword;
     }
 }
