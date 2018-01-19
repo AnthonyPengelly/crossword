@@ -119,7 +119,6 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
     }
 
     updateClue(newClue: Clue, answer: string): void {
-        console.log(getMaxLengthForClue(newClue, this.state.crossword));
         if (getMaxLengthForClue(newClue, this.state.crossword) >= answer.length) {
             this.writeAnswerFromClueToGrid(answer, newClue);
             const indexOfClue = this.state.crossword.clues.findIndex((clue) => 

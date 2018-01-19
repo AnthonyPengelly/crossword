@@ -24,6 +24,7 @@ export default class Crossword extends React.Component<CrosswordProps, Crossword
         super(props);
         this.state = {selectedClue: undefined, crossword: props.crossword};
         this.selectClue = this.selectClue.bind(this);
+        this.selectSquare = this.selectSquare.bind(this);
         this.deselectClue = this.deselectClue.bind(this);
         this.updateAnswer = this.updateAnswer.bind(this);
     }
@@ -52,11 +53,20 @@ export default class Crossword extends React.Component<CrosswordProps, Crossword
             <div>
                 <div className="clickable" onClick={this.props.returnToList}>Return to list</div>
                 <h1>{this.props.crossword.name}</h1>
-                <Grid crossword={this.props.crossword} selectedIndices={selectedIndices} onSquareClick={()=>{}} />
+                <Grid crossword={this.props.crossword} selectedIndices={selectedIndices} onSquareClick={this.selectSquare} />
                 <Clues clues={this.props.crossword.clues} selectClue={this.selectClue} />
                 {clueSolver}
             </div>
         );
+    }
+
+    selectSquare(index: number) {
+        const square = this.state.crossword.squares[index];
+        if (!!square.clueNumber) {
+            this.selectClue(this.state.crossword.clues.find(clue =>
+                clue.clueNumber === square.clueNumber
+            ));
+        }
     }
 
     selectClue(clue: NumberedClue): void {

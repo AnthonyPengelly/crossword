@@ -44,6 +44,7 @@
     text-align: center;
     vertical-align: top;
     border: 1px solid black;
+    cursor: pointer;
 }
 
 .clue-number {
