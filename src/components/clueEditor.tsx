@@ -1,10 +1,12 @@
 import * as React from "react";
 import {default as ClueModel, NumberedClue} from "../models/clue";
 import Direction from "../models/direction";
+import {answerIsValid} from "../helpers/answerHelper";
 
 interface ClueEditorProps {
     clue?: ClueModel;
     answer: string;
+    maxLength: number;
     updateClue: (clue: ClueModel, answer: string) => void;
     changeDirection: (direction: Direction) => void;
     closeClueEditor: () => void;
@@ -40,7 +42,7 @@ export default class ClueEditor extends React.Component<ClueEditorProps, ClueEdi
                     <label htmlFor="clue">Clue</label>
                     <input type="text" name="clue" autoFocus={true} value={this.state.clue} onChange={this.handleClueChange} />
                     <label htmlFor="answer">Answer</label>
-                    <input type="text" name="answer" value={this.state.answer} onChange={this.handleAnswerChange} />            
+                    <input type="text" name="answer" value={this.state.answer} onChange={this.handleAnswerChange} maxLength={this.props.maxLength} />            
                     <input type="submit" style={{visibility: "hidden"}} />
                     <button onClick={this.handleSubmit}>Update</button>
                 </form>
@@ -64,7 +66,9 @@ export default class ClueEditor extends React.Component<ClueEditorProps, ClueEdi
             startingIndex: this.props.clue.startingIndex,
             direction: this.props.clue.direction
         };
-        this.props.updateClue(clue, this.state.answer);
+        if (answerIsValid(this.state.answer, clue)) {
+            this.props.updateClue(clue, this.state.answer);
+        }
     }
 
     changeDirection() {

@@ -9,7 +9,7 @@ import ClueEditor from "./clueEditor";
 import CrosswordDetailsInput from "./crosswordDetailsInput";
 import Crossword from "./crossword";
 import {mapCrosswordToNumberedCrossword} from "../helpers/crosswordNumberer";
-import {getSquaresForClue} from "../helpers/answerHelper";
+import {getSquaresForClue, getMaxLengthForClue} from "../helpers/answerHelper";
 
 interface CrosswordCreatorProps {
     returnToList: () => void;
@@ -56,6 +56,7 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
                     <ClueEditor
                         clue={this.state.currentClue}
                         answer={this.getAnswerForClue(this.state.currentClue)}
+                        maxLength={getMaxLengthForClue(this.state.currentClue, this.state.crossword)}
                         updateClue={this.updateClue}
                         changeDirection={this.changeDirection}
                         closeClueEditor={this.closeClueCreator}
@@ -118,16 +119,19 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
     }
 
     updateClue(newClue: Clue, answer: string): void {
-        this.writeAnswerFromClueToGrid(answer, newClue);
-        const indexOfClue = this.state.crossword.clues.findIndex((clue) => 
-            clue.startingIndex === newClue.startingIndex && clue.direction === newClue.direction);
-        if (indexOfClue !== -1) {
-            this.state.crossword.clues[indexOfClue] = newClue as NumberedClue;
-        } else {
-            this.state.crossword.clues.push(newClue as NumberedClue);
+        console.log(getMaxLengthForClue(newClue, this.state.crossword));
+        if (getMaxLengthForClue(newClue, this.state.crossword) >= answer.length) {
+            this.writeAnswerFromClueToGrid(answer, newClue);
+            const indexOfClue = this.state.crossword.clues.findIndex((clue) => 
+                clue.startingIndex === newClue.startingIndex && clue.direction === newClue.direction);
+            if (indexOfClue !== -1) {
+                this.state.crossword.clues[indexOfClue] = newClue as NumberedClue;
+            } else {
+                this.state.crossword.clues.push(newClue as NumberedClue);
+            }
+            this.setState({crossword: mapCrosswordToNumberedCrossword(this.state.crossword)});
+            this.resetState();
         }
-        this.setState({crossword: mapCrosswordToNumberedCrossword(this.state.crossword)});
-        this.resetState();
     }
 
     selectClue(clue: NumberedClue): void {

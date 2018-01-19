@@ -3,6 +3,16 @@ import Square from "../models/square";
 import Crossword from "../models/crossword";
 import Direction from "../models/direction";
 
+export function answerIsValid(answer: string, clue: Clue): boolean {
+    const regex = new RegExp("[a-zA-Z]");
+    for (let i = 0; i < answer.length; i++) {
+        if (!regex.test(answer[i])) {
+            return false;
+        }
+    }
+    return answer.length <= clue.length;
+}
+
 export function getSquaresForClue(clue: Clue, crossword: Crossword): Square[] {
     let squares: Square[] = [];
     for(let i = 0; i < clue.length; i++) {
@@ -31,7 +41,7 @@ function getIncrementedIndex(index: number, direction: Direction, crossword: Cro
     if (direction === Direction.Across) {
         const row = Math.floor(index / crossword.size);
         const newIndex = index + 1;
-        if (Math.floor(newIndex / crossword.size) !== row && newIndex >= crossword.squares.length) {
+        if (Math.floor(newIndex / crossword.size) !== row || newIndex >= crossword.squares.length) {
             return -1;
         }
         return newIndex;
