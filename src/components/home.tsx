@@ -6,6 +6,7 @@ import CrosswordCreator from "../components/crosswordCreator";
 import testCrossword from "../testCrossword";
 import {mapCrosswordToNumberedCrossword} from "../helpers/crosswordNumberer";
 import { NumberedClue } from "../models/clue";
+const LucysCrossword = JSON.parse(require("../lucys-crossword.json"));
 
 interface HomeState {
     crosswords: NumberedCrossword[];
@@ -16,7 +17,7 @@ interface HomeState {
 export default class Home extends React.Component<{}, HomeState> {
     constructor(props: {}) {
         super(props);
-        this.state = {crosswords: [mapCrosswordToNumberedCrossword(testCrossword)], createCrossword: false};
+        this.state = {crosswords: [mapCrosswordToNumberedCrossword(testCrossword), LucysCrossword], createCrossword: false};
         this.returnToList = this.returnToList.bind(this);
         this.openCrossword = this.openCrossword.bind(this);
         this.openCrosswordCreator = this.openCrosswordCreator.bind(this);
