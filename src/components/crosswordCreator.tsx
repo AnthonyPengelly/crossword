@@ -12,6 +12,7 @@ import {mapCrosswordToNumberedCrossword} from "../helpers/crosswordNumberer";
 import {getSquaresForClue, getMaxLengthForClue, getIndexOfClue} from "../helpers/clueHelper";
 
 interface CrosswordCreatorProps {
+    crossword?: NumberedCrossword;
     returnToList: () => void;
     createCrossword: (crossword: NumberedCrossword) => void;
 }
@@ -26,7 +27,7 @@ interface CrosswordCreatorState {
 export default class CrosswordCreator extends React.Component<CrosswordCreatorProps, CrosswordCreatorState> {
     constructor(props: CrosswordCreatorProps) {
         super(props);
-        this.state = {crossword: undefined, selectedIndices: []};
+        this.state = {crossword: this.getCrosswordForEditting(props.crossword), selectedIndices: []};
         this.createBlankCrossword = this.createBlankCrossword.bind(this);
         this.completeCrossword = this.completeCrossword.bind(this);
         this.selectSquare = this.selectSquare.bind(this);
@@ -35,6 +36,10 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
         this.changeDirection = this.changeDirection.bind(this);
         this.updateClue = this.updateClue.bind(this);
         this.deleteClue = this.deleteClue.bind(this);
+    }
+
+    componentWillReceiveProps(newProps: CrosswordCreatorProps): void {
+        this.setState({crossword: this.getCrosswordForEditting(newProps.crossword)});
     }
     
     render(): JSX.Element {
@@ -172,6 +177,18 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
         for(let i = 0; i < clue.length; i++) {
             squares[i].letter = answer[i].toUpperCase();
         }
+    }
+
+    getCrosswordForEditting(crossword: NumberedCrossword): NumberedCrossword {
+        if (!crossword) {
+            return undefined;
+        }
+        crossword.squares.forEach(square => {
+            if (!square.letter) {
+                square.isBlank = false;
+            }
+        });
+        return crossword;
     }
 
     resetState(): void {

@@ -5,7 +5,7 @@ import testCrossword from "../testCrossword";
 interface CrosswordListProps {
     crosswords: Crossword[];
     openCrossword: (crossword: Crossword) => void;
-    openCrosswordCreator: () => void;
+    openCrosswordCreator: (crossword: Crossword) => void;
 }
 
 export default class CrosswordList extends React.Component<CrosswordListProps, {}> {
@@ -15,16 +15,18 @@ export default class CrosswordList extends React.Component<CrosswordListProps, {
     
     render(): JSX.Element {
         const crosswordList = this.props.crosswords.map((crossword, index) => (
-            <li className="clickable"
-                key={index}
-                onClick={() => this.props.openCrossword(crossword)}
-            >
-                {index + 1}. {crossword.name} (size: {crossword.size})
-            </li>
+            <React.Fragment key={index}>
+                <li className="clickable"
+                    onClick={() => this.props.openCrossword(crossword)}
+                >
+                    {index + 1}. {crossword.name} (size: {crossword.size})
+                </li>
+                <button onClick={() => this.props.openCrosswordCreator(crossword)}>Edit</button>
+            </React.Fragment>
         ));
         return (
             <div>
-                <div className="clickable" onClick={this.props.openCrosswordCreator}>
+                <div className="clickable" onClick={() => this.props.openCrosswordCreator(undefined)}>
                     Create Crossword
                 </div>
                 <h1>Crosswords</h1>

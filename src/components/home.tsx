@@ -40,21 +40,28 @@ export default class Home extends React.Component<{}, HomeState> {
         this.setState({currentCrossword: this.getEmptyCrosswordFromCrossword(crossword)});
     }
 
-    openCrosswordCreator() {
-        this.setState({createCrossword: true, currentCrossword: undefined});
+    openCrosswordCreator(crossword: NumberedCrossword) {
+        this.setState({createCrossword: true, currentCrossword: crossword});
     }
 
     createCrossword(crossword: NumberedCrossword): void {
+        if (this.state.currentCrossword !== undefined) {
+            this.state.crosswords.splice(this.state.crosswords.indexOf(this.state.currentCrossword), 1);
+        }
         this.state.crosswords.push(crossword);
         this.setState({
             currentCrossword: undefined,
-            createCrossword: false
+            createCrossword: false,
+            crosswords: this.state.crosswords
         });
     }
 
     getContentFromState(): JSX.Element {
         if (this.state.createCrossword) {
-            return <CrosswordCreator returnToList={this.returnToList} createCrossword={this.createCrossword} />
+            return <CrosswordCreator
+                crossword={this.state.currentCrossword}
+                returnToList={this.returnToList}
+                createCrossword={this.createCrossword} />
         }
         if (this.state.currentCrossword !== undefined) {
             return <Crossword crossword={this.state.currentCrossword} returnToList={this.returnToList} />;
@@ -68,10 +75,15 @@ export default class Home extends React.Component<{}, HomeState> {
     }
 
     getEmptyCrosswordFromCrossword(crossword: NumberedCrossword): NumberedCrossword {
-        crossword.squares = crossword.squares.map(square => {return {
+        const squares = crossword.squares.map(square => {return {
             isBlank: square.isBlank, 
             clueNumber: square.clueNumber
         }});
-        return crossword;
+        return {
+            name: crossword.name,
+            clues: crossword.clues,
+            squares: squares,
+            size: crossword.size
+        };
     }
 }
