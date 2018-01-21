@@ -9,7 +9,7 @@ import ClueEditor from "./clueEditor";
 import CrosswordDetailsInput from "./crosswordDetailsInput";
 import Crossword from "./crossword";
 import {mapCrosswordToNumberedCrossword} from "../helpers/crosswordNumberer";
-import {getSquaresForClue, getMaxLengthForClue} from "../helpers/answerHelper";
+import {getSquaresForClue, getMaxLengthForClue, getIndexOfClue} from "../helpers/clueHelper";
 
 interface CrosswordCreatorProps {
     returnToList: () => void;
@@ -67,7 +67,7 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
                 <React.Fragment>
                     <h2>{this.state.crossword.name}</h2>
                     <Grid crossword={this.state.crossword} selectedIndices={[]} onSquareClick={this.selectSquare} />
-                    <Clues clues={this.state.crossword.clues} selectClue={this.selectClue} />
+                    <Clues clues={this.state.crossword.clues} selectClue={this.selectClue} answeredCluesIndices={[]} />
                     {clueEditor}
                     <button onClick={this.completeCrossword}>Complete</button>
                 </React.Fragment>
@@ -121,8 +121,7 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
     updateClue(newClue: Clue, answer: string): void {
         if (getMaxLengthForClue(newClue, this.state.crossword) >= answer.length) {
             this.writeAnswerFromClueToGrid(answer, newClue);
-            const indexOfClue = this.state.crossword.clues.findIndex((clue) => 
-                clue.startingIndex === newClue.startingIndex && clue.direction === newClue.direction);
+            const indexOfClue = getIndexOfClue(newClue, this.state.crossword);
             if (indexOfClue !== -1) {
                 this.state.crossword.clues[indexOfClue] = newClue as NumberedClue;
             } else {

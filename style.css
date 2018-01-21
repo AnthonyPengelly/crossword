@@ -1,3 +1,7 @@
+li {
+    list-style: none;
+}
+
 #content {
     max-width: 976px;
     margin: auto;
@@ -65,6 +69,10 @@
 
 .clues {
     display: inline-block;
+}
+
+.clue--answered {
+    text-decoration: line-through;
 }
 
 .clickable {

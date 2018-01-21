@@ -7,7 +7,7 @@ import Grid from "./grid";
 import Square from "./square";
 import Clues from "./clues";
 import ClueSolver from "./clueSolver";
-import {getSquaresForClue} from "../helpers/answerHelper";
+import {getSquaresForClue, getUpdatedAnsweredCluesList} from "../helpers/clueHelper";
 
 interface CrosswordProps {
     crossword: NumberedCrossword;
@@ -16,13 +16,14 @@ interface CrosswordProps {
 
 interface CrosswordState {
     crossword: NumberedCrossword;
+    answeredClues: number[];
     selectedClue?: NumberedClue;
 }
 
 export default class Crossword extends React.Component<CrosswordProps, CrosswordState> {
     constructor(props: CrosswordProps) {
         super(props);
-        this.state = {selectedClue: undefined, crossword: props.crossword};
+        this.state = {selectedClue: undefined, crossword: props.crossword, answeredClues: []};
         this.selectClue = this.selectClue.bind(this);
         this.selectSquare = this.selectSquare.bind(this);
         this.deselectClue = this.deselectClue.bind(this);
@@ -54,7 +55,11 @@ export default class Crossword extends React.Component<CrosswordProps, Crossword
                 <div className="clickable" onClick={this.props.returnToList}>Return to list</div>
                 <h1>{this.props.crossword.name}</h1>
                 <Grid crossword={this.props.crossword} selectedIndices={selectedIndices} onSquareClick={this.selectSquare} />
-                <Clues clues={this.props.crossword.clues} selectClue={this.selectClue} />
+                <Clues
+                    clues={this.props.crossword.clues}
+                    selectClue={this.selectClue}
+                    answeredCluesIndices={this.state.answeredClues}
+                />
                 {clueSolver}
             </div>
         );
@@ -79,9 +84,16 @@ export default class Crossword extends React.Component<CrosswordProps, Crossword
 
     updateAnswer(clue: NumberedClue, answer: string) {
         const squares = getSquaresForClue(clue, this.state.crossword);
-        for (let i = 0; i < answer.length; i++) {
-            squares[i].letter = answer[i].toUpperCase();
+        for (let i = 0; i < squares.length; i++) {
+            if (i < answer.length) {
+                squares[i].letter = answer[i].toUpperCase();
+            } else {
+                squares[i].letter = undefined;
+            }
         }
+        this.setState({
+            answeredClues: getUpdatedAnsweredCluesList(this.state.crossword)
+        });
         this.deselectClue();
     }
 }
