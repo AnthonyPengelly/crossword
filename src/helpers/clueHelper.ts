@@ -26,6 +26,17 @@ export function getSquaresForClue(clue: Clue, crossword: Crossword): Square[] {
     return squares;
 }
 
+export function getMaxSquaresForClue(clue: Clue, crossword: Crossword): Square[] {
+    const maxLength = getMaxLengthForClue(clue, crossword);
+    const mockClue: Clue = {
+        clue: clue.clue,
+        startingIndex: clue.startingIndex,
+        direction: clue.direction,
+        length: maxLength
+    }
+    return getSquaresForClue(mockClue, crossword);
+}
+
 export function getMaxLengthForClue(clue: Clue, crossword: Crossword): number {
     let maxLength = 0;
     let currentIndex = clue.startingIndex;

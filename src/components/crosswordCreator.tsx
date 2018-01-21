@@ -9,7 +9,7 @@ import ClueEditor from "./clueEditor";
 import CrosswordDetailsInput from "./crosswordDetailsInput";
 import Crossword from "./crossword";
 import {mapCrosswordToNumberedCrossword} from "../helpers/crosswordNumberer";
-import {getSquaresForClue, getMaxLengthForClue, getIndexOfClue} from "../helpers/clueHelper";
+import {getSquaresForClue, getMaxLengthForClue, getMaxSquaresForClue, getIndexOfClue} from "../helpers/clueHelper";
 
 interface CrosswordCreatorProps {
     crossword?: NumberedCrossword;
@@ -57,6 +57,7 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
             return <CrosswordDetailsInput createCrossword={this.createBlankCrossword} />;
         } else {
             let clueEditor: JSX.Element = undefined;
+            let selectedIndices: number[] = [];
             if (this.state.currentClue !== undefined) {
                 clueEditor = (
                     <ClueEditor
@@ -69,11 +70,18 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
                         closeClueEditor={this.closeClueCreator}
                     />
                 );
+                let selectedSquares: SquareModel[] = [];
+                if (this.state.currentClue.length === 0) {
+                    selectedSquares = getMaxSquaresForClue(this.state.currentClue, this.state.crossword);
+                } else {
+                    selectedSquares = getSquaresForClue(this.state.currentClue, this.state.crossword);
+                }
+                selectedIndices = selectedSquares.map(square => this.state.crossword.squares.indexOf(square));
             }
             return (
                 <React.Fragment>
                     <h2>{this.state.crossword.name}</h2>
-                    <Grid crossword={this.state.crossword} selectedIndices={[]} onSquareClick={this.selectSquare} />
+                    <Grid crossword={this.state.crossword} selectedIndices={selectedIndices} onSquareClick={this.selectSquare} />
                     <Clues clues={this.state.crossword.clues} selectClue={this.selectClue} answeredCluesIndices={[]} />
                     {clueEditor}
                     <button onClick={this.completeCrossword}>Complete</button>
@@ -193,12 +201,17 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
         if (!crossword) {
             return undefined;
         }
-        crossword.squares.forEach(square => {
-            if (!square.letter) {
-                square.isBlank = false;
-            }
-        });
-        return crossword;
+        const squares = crossword.squares.map(square => {return {
+            isBlank: false,
+            letter: square.letter,
+            clueNumber: square.clueNumber
+        }});
+        return {
+            name: crossword.name,
+            clues: crossword.clues,
+            squares: squares,
+            size: crossword.size
+        };
     }
 
     resetState(): void {
