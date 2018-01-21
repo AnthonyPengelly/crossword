@@ -1,6 +1,6 @@
 import * as React from "react";
 import {NumberedCrossword} from "../models/crossword";
-import SquareModel from "../models/square";
+import {default as SquareModel, NumberedSquare} from "../models/square";
 import { NumberedClue, default as Clue } from "../models/clue";
 import Direction from "../models/direction";
 import Grid from "./grid";
@@ -34,6 +34,7 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
         this.closeClueCreator = this.closeClueCreator.bind(this);
         this.changeDirection = this.changeDirection.bind(this);
         this.updateClue = this.updateClue.bind(this);
+        this.deleteClue = this.deleteClue.bind(this);
     }
     
     render(): JSX.Element {
@@ -58,6 +59,7 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
                         answer={this.getAnswerForClue(this.state.currentClue)}
                         maxLength={getMaxLengthForClue(this.state.currentClue, this.state.crossword)}
                         updateClue={this.updateClue}
+                        deleteClue={this.deleteClue}
                         changeDirection={this.changeDirection}
                         closeClueEditor={this.closeClueCreator}
                     />
@@ -106,7 +108,7 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
         if (!clue) {
             clue = {
                 clue: "",
-                length: 2,
+                length: 0,
                 startingIndex: squareIndex,
                 direction: direction
             };
@@ -130,6 +132,23 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
             this.setState({crossword: mapCrosswordToNumberedCrossword(this.state.crossword)});
             this.resetState();
         }
+    }
+
+    deleteClue(clue: NumberedClue): void {
+        const squares = getSquaresForClue(clue, this.state.crossword);
+        const shouldRemoveClueNumber = this.state.crossword.clues.filter(currentClue =>
+            currentClue.clueNumber === clue.clueNumber
+        ).length <= 1;
+        for(let i = 0; i < clue.length; i++) {
+            squares[i].letter = undefined;
+            if (shouldRemoveClueNumber) {
+                (squares[i] as NumberedSquare).clueNumber = undefined;
+            }
+        }
+        // Remove clue from list
+        this.state.crossword.clues.splice(getIndexOfClue(clue, this.state.crossword), 1);
+        this.setState({crossword: mapCrosswordToNumberedCrossword(this.state.crossword)});
+        this.resetState();
     }
 
     selectClue(clue: NumberedClue): void {

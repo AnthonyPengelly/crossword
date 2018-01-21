@@ -8,6 +8,7 @@ interface ClueEditorProps {
     answer: string;
     maxLength: number;
     updateClue: (clue: ClueModel, answer: string) => void;
+    deleteClue: (clue: ClueModel) => void;
     changeDirection: (direction: Direction) => void;
     closeClueEditor: () => void;
 }
@@ -32,6 +33,9 @@ export default class ClueEditor extends React.Component<ClueEditorProps, ClueEdi
     }
 
     render(): JSX.Element {
+        const deleteButton = this.props.clue && this.props.clue.length !== 0
+            ? <button onClick={() => this.props.deleteClue(this.props.clue)}>Delete</button>
+            : undefined;
         return (
             <div className="clue-dialog clue-editor">
                 <div className="clickable" onClick={this.props.closeClueEditor}>Close</div>
@@ -46,6 +50,7 @@ export default class ClueEditor extends React.Component<ClueEditorProps, ClueEdi
                     <input type="submit" style={{visibility: "hidden"}} />
                     <button onClick={this.handleSubmit}>Update</button>
                 </form>
+                {deleteButton}
             </div>
         );
     }
