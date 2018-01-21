@@ -108,7 +108,17 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
         this.resetState();
     }
 
-    selectSquare(squareIndex: number, direction: Direction = Direction.Across): void {
+    selectSquare(squareIndex: number): void {
+        let direction = Direction.Across;
+        if (squareIndex === this.state.selectedSquareIndex && !! this.state.currentClue) {
+            direction = this.state.currentClue.direction === Direction.Across
+                ? Direction.Down
+                : Direction.Across;
+        }
+        this.selectSquareWithDirection(squareIndex, direction);
+    }
+
+    selectSquareWithDirection(squareIndex: number, direction: Direction): void {
         let clue = this.getClueForSquareAndDirection(squareIndex, direction);
         if (!clue) {
             clue = {
@@ -122,7 +132,7 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
     }
 
     changeDirection(direction: Direction): void {
-        this.selectSquare(this.state.selectedSquareIndex, direction);
+        this.selectSquareWithDirection(this.state.selectedSquareIndex, direction);
     }
 
     updateClue(newClue: Clue, answer: string): void {

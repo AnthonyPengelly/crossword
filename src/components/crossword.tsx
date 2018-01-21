@@ -68,9 +68,15 @@ export default class Crossword extends React.Component<CrosswordProps, Crossword
     selectSquare(index: number) {
         const square = this.state.crossword.squares[index];
         if (!!square.clueNumber) {
-            this.selectClue(this.state.crossword.clues.find(clue =>
+            //this.selectClue
+            const clues = this.state.crossword.clues.filter(clue =>
                 clue.clueNumber === square.clueNumber
-            ));
+            );
+            if (clues.length > 1 && !!this.state.selectedClue && this.state.selectedClue.startingIndex === index) {
+                    this.selectClue(clues.find(clue => clue.direction !== this.state.selectedClue.direction));
+            } else {
+                this.selectClue(clues[0]);
+            }
         }
     }
 
