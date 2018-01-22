@@ -4,7 +4,10 @@
   "description": "Crossword app",
   "main": "index.js",
   "scripts": {
-    "start": "webpack",
+    "start": "npm run webpack && node dist/bundle.server.js",
+    "webpack": "npm run compileClient && npm run compileServer",
+    "compileClient": "webpack --config webpack.config.client.js && scripts/copy-static-files.sh",
+    "compileServer": "webpack --config webpack.config.server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
