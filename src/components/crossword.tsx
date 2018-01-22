@@ -8,6 +8,8 @@ import Square from "./square";
 import Clues from "./clues";
 import ClueSolver from "./clueSolver";
 import {getSquaresForClue, getUpdatedAnsweredCluesList} from "../helpers/clueHelper";
+import {getCluesForSquareIndex} from "../helpers/squareHelper";
+import {getUpdatedSquaresWithAnswer} from "../helpers/answerHelper";
 
 interface CrosswordProps {
     crossword: NumberedCrossword;
@@ -38,17 +40,8 @@ export default class Crossword extends React.Component<CrosswordProps, Crossword
         let selectedIndices: number[] = [];
         let clueSolver: JSX.Element = undefined;
         if (!!this.state.selectedClue) {
-            const selectedSquares = getSquaresForClue(this.state.selectedClue, this.state.crossword);
-            const answer = selectedSquares.map (square => square.letter).join("");
-            selectedIndices = selectedSquares.map(square => this.state.crossword.squares.indexOf(square));
-            clueSolver = (
-                <ClueSolver
-                    clue={this.state.selectedClue}
-                    updateAnswer={this.updateAnswer}
-                    closeClueSolver={this.deselectClue}
-                    answer={answer}
-                />
-            );
+            selectedIndices = this.getSelectedIndices();
+            clueSolver = this.renderClueSolver();
         }
         return (
             <div>
@@ -65,17 +58,30 @@ export default class Crossword extends React.Component<CrosswordProps, Crossword
         );
     }
 
+    renderClueSolver(): JSX.Element {
+        const selectedSquares = getSquaresForClue(this.state.selectedClue, this.state.crossword);
+        const answer = selectedSquares.map(square => square.letter).join("");
+        return (
+            <ClueSolver
+                clue={this.state.selectedClue}
+                updateAnswer={this.updateAnswer}
+                closeClueSolver={this.deselectClue}
+                answer={answer}
+            />
+        );
+    }
+
+    getSelectedIndices(): number[] {
+        return getSquaresForClue(this.state.selectedClue, this.state.crossword)
+            .map(square => this.state.crossword.squares.indexOf(square));
+    }
+
     selectSquare(index: number) {
-        const square = this.state.crossword.squares[index];
-        if (!!square.clueNumber) {
-            const clues = this.state.crossword.clues.filter(clue =>
-                clue.clueNumber === square.clueNumber
-            );
-            if (clues.length > 1 && !!this.state.selectedClue && this.state.selectedClue.startingIndex === index) {
-                    this.selectClue(clues.find(clue => clue.direction !== this.state.selectedClue.direction));
-            } else {
-                this.selectClue(clues[0]);
-            }
+        const clues = getCluesForSquareIndex(index, this.state.crossword);
+        if (clues.length > 1 && !!this.state.selectedClue && this.state.selectedClue.startingIndex === index) {
+                this.selectClue(clues.find(clue => clue.direction !== this.state.selectedClue.direction));
+        } else if (clues.length >= 1) {
+            this.selectClue(clues[0]);
         }
     }
 
@@ -88,14 +94,7 @@ export default class Crossword extends React.Component<CrosswordProps, Crossword
     }
 
     updateAnswer(clue: NumberedClue, answer: string) {
-        const squares = getSquaresForClue(clue, this.state.crossword);
-        for (let i = 0; i < squares.length; i++) {
-            if (i < answer.length) {
-                squares[i].letter = answer[i].toUpperCase();
-            } else {
-                squares[i].letter = undefined;
-            }
-        }
+        this.state.crossword.squares = getUpdatedSquaresWithAnswer(answer, clue, this.state.crossword);
         this.setState({
             answeredClues: getUpdatedAnsweredCluesList(this.state.crossword)
         });

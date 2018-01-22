@@ -55,7 +55,7 @@ export function getIndexOfClue(clue: Clue, crossword: Crossword): number {
             && crosswordClue.direction === clue.direction);
 }
 
-function getIncrementedIndex(index: number, direction: Direction, crossword: Crossword): number {
+export function getIncrementedIndex(index: number, direction: Direction, crossword: Crossword): number {
     if (direction === Direction.Across) {
         const row = Math.floor(index / crossword.size);
         const newIndex = index + 1;
