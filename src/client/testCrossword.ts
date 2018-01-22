@@ -1,5 +1,5 @@
-import Crossword from "./models/crossword";
-import Direction from "./models/direction";
+import Crossword from "../shared/models/crossword";
+import Direction from "../shared/models/direction";
 
 const crossword: Crossword = {
     name: "Easy Crossword",

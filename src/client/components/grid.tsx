@@ -1,8 +1,8 @@
 import * as React from "react";
-import CrosswordModel from "../models/crossword";
-import SquareModel from "../models/square";
-import ClueModel from "../models/clue";
-import Direction from "../models/direction";
+import CrosswordModel from "../../shared/models/crossword";
+import SquareModel from "../../shared/models/square";
+import ClueModel from "../../shared/models/clue";
+import Direction from "../../shared/models/direction";
 import Square from "./square";
 import Clues from "./clues";
 

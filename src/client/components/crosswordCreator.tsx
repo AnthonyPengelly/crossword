@@ -1,18 +1,18 @@
 import * as React from "react";
-import {NumberedCrossword} from "../models/crossword";
-import {default as SquareModel, NumberedSquare} from "../models/square";
-import { NumberedClue, default as Clue } from "../models/clue";
-import Direction from "../models/direction";
+import {NumberedCrossword} from "../../shared/models/crossword";
+import {default as SquareModel, NumberedSquare} from "../../shared/models/square";
+import { NumberedClue, default as Clue } from "../../shared/models/clue";
+import Direction from "../../shared/models/direction";
 import Grid from "./grid";
 import Clues from "./clues";
 import ClueEditor from "./clueEditor";
 import CrosswordDetailsInput from "./crosswordDetailsInput";
 import Crossword from "./crossword";
-import {mapCrosswordToNumberedCrossword, getCrosswordForEditing, createBlankCrossword} from "../helpers/crosswordHelper";
-import { getAnswerForClue } from "../helpers/answerHelper";
+import {mapCrosswordToNumberedCrossword, getCrosswordForEditing, createBlankCrossword} from "../../shared/helpers/crosswordHelper";
+import { getAnswerForClue } from "../../shared/helpers/answerHelper";
 import {getSquaresForClue, getMaxLengthForClue, getMaxSquaresForClue,
-    getIndexOfClue, createBlankClue, getClueForSquareAndDirection} from "../helpers/clueHelper";
-import { removeClueNumbersIfNeeded } from "../helpers/squareHelper";
+    getIndexOfClue, createBlankClue, getClueForSquareAndDirection} from "../../shared/helpers/clueHelper";
+import { removeClueNumbersIfNeeded } from "../../shared/helpers/squareHelper";
 
 interface CrosswordCreatorProps {
     crossword?: NumberedCrossword;

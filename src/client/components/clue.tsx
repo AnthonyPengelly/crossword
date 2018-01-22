@@ -1,5 +1,5 @@
 import * as React from "react";
-import {default as ClueModel, NumberedClue} from "../models/clue";
+import {default as ClueModel, NumberedClue} from "../../shared/models/clue";
 
 interface ClueProps {
     clue: NumberedClue;

@@ -1,7 +1,6 @@
 import {default as Crossword, NumberedCrossword} from "../models/crossword";
 import {default as Clue, NumberedClue} from "../models/clue";
 import {NumberedSquare} from "../models/square";
-import Square from "../components/square";
 
 export function createBlankCrossword(name: string, size: number): NumberedCrossword {
     let squares: NumberedSquare[] = [];

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {NumberedCrossword} from "../models/crossword";
+import {NumberedCrossword} from "../../shared/models/crossword";
 import CrosswordList from "../components/crosswordList";
 import Crossword from "../components/crossword";
 import CrosswordCreator from "../components/crosswordCreator";

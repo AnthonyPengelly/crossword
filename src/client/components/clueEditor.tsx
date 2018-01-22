@@ -1,7 +1,7 @@
 import * as React from "react";
-import {default as ClueModel, NumberedClue} from "../models/clue";
-import Direction from "../models/direction";
-import {answerIsValid} from "../helpers/answerHelper";
+import {default as ClueModel, NumberedClue} from "../../shared/models/clue";
+import Direction from "../../shared/models/direction";
+import {answerIsValid} from "../../shared/helpers/answerHelper";
 
 interface ClueEditorProps {
     clue?: ClueModel;

@@ -1,8 +1,8 @@
 import * as React from "react";
-import {NumberedCrossword} from "../models/crossword";
+import {NumberedCrossword} from "../../shared/models/crossword";
 import Router from "../components/router";
 import testCrossword from "../testCrossword";
-import {mapCrosswordToNumberedCrossword, getEmptyCrosswordFromCrossword} from "../helpers/crosswordHelper";
+import {mapCrosswordToNumberedCrossword, getEmptyCrosswordFromCrossword} from "../../shared/helpers/crosswordHelper";
 const LucysCrossword = JSON.parse(require("../lucys-crossword.json"));
 
 interface HomeState {

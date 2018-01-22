@@ -1,5 +1,5 @@
 import * as React from "react";
-import {NumberedSquare} from "../models/square";
+import {NumberedSquare} from "../../shared/models/square";
 
 interface SquareProps {
     square: NumberedSquare;

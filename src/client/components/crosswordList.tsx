@@ -1,5 +1,5 @@
 import * as React from "react";
-import Crossword from "../models/crossword";
+import Crossword from "../../shared/models/crossword";
 import testCrossword from "../testCrossword";
 
 interface CrosswordListProps {

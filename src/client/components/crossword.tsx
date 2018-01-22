@@ -1,15 +1,15 @@
 import * as React from "react";
-import {NumberedCrossword} from "../models/crossword";
-import SquareModel from "../models/square";
-import {NumberedClue} from "../models/clue";
-import Direction from "../models/direction";
+import {NumberedCrossword} from "../../shared/models/crossword";
+import SquareModel from "../../shared/models/square";
+import {NumberedClue} from "../../shared/models/clue";
+import Direction from "../../shared/models/direction";
 import Grid from "./grid";
 import Square from "./square";
 import Clues from "./clues";
 import ClueSolver from "./clueSolver";
-import {getSquaresForClue, getUpdatedAnsweredCluesList} from "../helpers/clueHelper";
-import {getCluesForSquareIndex} from "../helpers/squareHelper";
-import {getUpdatedSquaresWithAnswer} from "../helpers/answerHelper";
+import {getSquaresForClue, getUpdatedAnsweredCluesList} from "../../shared/helpers/clueHelper";
+import {getCluesForSquareIndex} from "../../shared/helpers/squareHelper";
+import {getUpdatedSquaresWithAnswer} from "../../shared/helpers/answerHelper";
 
 interface CrosswordProps {
     crossword: NumberedCrossword;

@@ -1,6 +1,6 @@
 import * as React from "react";
-import {NumberedClue} from "../models/clue";
-import Direction from "../models/direction";
+import {NumberedClue} from "../../shared/models/clue";
+import Direction from "../../shared/models/direction";
 import Clue from "../components/clue";
 
 interface CluesProps {
