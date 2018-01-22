@@ -2,9 +2,11 @@ import * as express from "express";
 import * as bodyParser from "body-parser";
 import Database from "./database/database";
 import MemoryCrosswordDatabase from "./database/memoryCrosswordDatabase";
-import Crossword from "./models/crossword";
+import {NumberedCrossword as Crossword} from "./models/crossword";
+import CrosswordService from "./services/crosswordService";
 
 const database: Database<Crossword> = new MemoryCrosswordDatabase();
+const crosswordService = new CrosswordService(database);
 const app = express();
 
 app.use(bodyParser.json());
@@ -12,21 +14,28 @@ app.use(bodyParser.json());
 app.use(express.static('dist/public'));
 
 app.get("/api/crosswords", (req, res) => {
-    res.send(database.getAll());
+    res.send(crosswordService.getAll());
 });
 
 app.get("/api/crosswords/:id", (req, res) => {
-    res.send(database.getById(req.param("id")));
+    res.send(crosswordService.getByName(req.param("id")));
+});
+
+app.get("/api/crosswords/:id/edit", (req, res) => {
+    res.send(crosswordService.getForEditing(req.param("id")));
+});
+
+app.get("/api/crosswords/:id/complete", (req, res) => {
+    res.send(crosswordService.getComplete(req.params.id));
 });
 
 app.post("/api/crosswords", (req, res) => {
     const crossword: Crossword = req.body;
-    console.log(req);
-    res.send(database.createOrUpdate(crossword));
+    res.send(crosswordService.createOrUpdate(crossword));
 });
 
 app.delete("/api/crosswords/:id", (req, res) => {
-    res.send(database.delete(req.param("id")));
+    res.send(crosswordService.delete(req.params.id));
 });
 
 

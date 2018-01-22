@@ -1,5 +1,5 @@
 import Database from "./database";
-import Crossword from "../models/crossword";
+import {NumberedCrossword as Crossword} from "../models/crossword";
 
 export default class MemoryCrosswordDatabase extends Database<Crossword> {
     crosswords: Crossword[] = [];
