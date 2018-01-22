@@ -11,19 +11,11 @@ interface CrosswordListProps {
 export default class CrosswordList extends React.Component<CrosswordListProps, {}> {
     constructor(props: CrosswordListProps) {
         super(props);
+        this.mapCrosswordToListItem = this.mapCrosswordToListItem.bind(this);
     }
     
     render(): JSX.Element {
-        const crosswordList = this.props.crosswords.map((crossword, index) => (
-            <React.Fragment key={index}>
-                <li className="clickable"
-                    onClick={() => this.props.openCrossword(crossword)}
-                >
-                    {index + 1}. {crossword.name} (size: {crossword.size})
-                </li>
-                <button onClick={() => this.props.openCrosswordCreator(crossword)}>Edit</button>
-            </React.Fragment>
-        ));
+        const crosswordList = this.props.crosswords.map(this.mapCrosswordToListItem);
         return (
             <div>
                 <div className="clickable" onClick={() => this.props.openCrosswordCreator(undefined)}>
@@ -34,6 +26,19 @@ export default class CrosswordList extends React.Component<CrosswordListProps, {
                     {crosswordList}
                 </ul>
             </div>
+        );
+    }
+
+    mapCrosswordToListItem(crossword: Crossword, index: number): JSX.Element {
+        return (
+            <React.Fragment key={index}>
+                <li className="clickable"
+                    onClick={() => this.props.openCrossword(crossword)}
+                >
+                    {index + 1}. {crossword.name} (size: {crossword.size})
+                </li>
+                <button onClick={() => this.props.openCrosswordCreator(crossword)}>Edit</button>
+            </React.Fragment>
         );
     }
 }
