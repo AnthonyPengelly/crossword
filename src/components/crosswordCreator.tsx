@@ -8,7 +8,7 @@ import Clues from "./clues";
 import ClueEditor from "./clueEditor";
 import CrosswordDetailsInput from "./crosswordDetailsInput";
 import Crossword from "./crossword";
-import {mapCrosswordToNumberedCrossword} from "../helpers/crosswordNumberer";
+import {mapCrosswordToNumberedCrossword} from "../helpers/crosswordHelper";
 import {getSquaresForClue, getMaxLengthForClue, getMaxSquaresForClue, getIndexOfClue} from "../helpers/clueHelper";
 
 interface CrosswordCreatorProps {
