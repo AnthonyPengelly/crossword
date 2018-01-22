@@ -12,6 +12,7 @@ import {mapCrosswordToNumberedCrossword, getCrosswordForEditing, createBlankCros
 import { getAnswerForClue } from "../helpers/answerHelper";
 import {getSquaresForClue, getMaxLengthForClue, getMaxSquaresForClue,
     getIndexOfClue, createBlankClue, getClueForSquareAndDirection} from "../helpers/clueHelper";
+import { removeClueNumbersIfNeeded } from "../helpers/squareHelper";
 
 interface CrosswordCreatorProps {
     crossword?: NumberedCrossword;
@@ -92,10 +93,6 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
         }
     }
 
-    createBlankCrossword(name: string, size: number) {
-        this.setState({crossword: createBlankCrossword(name, size)});
-    }
-
     completeCrossword(): void {
         this.state.crossword.squares.forEach(square => {
             if (!square.letter) {
@@ -103,6 +100,31 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
             }
         });
         this.props.createCrossword(this.state.crossword);
+    }
+
+    updateClue(newClue: Clue, answer: string): void {
+        if (getMaxLengthForClue(newClue, this.state.crossword) >= answer.length) {
+            this.writeAnswerFromClueToGrid(answer, newClue);
+            this.addOrUpdateClue(newClue);
+            this.setState({crossword: mapCrosswordToNumberedCrossword(this.state.crossword)});
+            this.resetState();
+        }
+    }
+
+    deleteClue(clue: NumberedClue): void {
+        removeClueNumbersIfNeeded(clue, this.state.crossword);
+        // Remove clue from list
+        this.state.crossword.clues.splice(getIndexOfClue(clue, this.state.crossword), 1);
+        this.setState({crossword: mapCrosswordToNumberedCrossword(this.state.crossword)});
+        this.resetState();
+    }
+
+    selectClue(clue: NumberedClue): void {
+        this.setState({selectedSquareIndex: clue.startingIndex, currentClue: clue});
+    }
+
+    createBlankCrossword(name: string, size: number) {
+        this.setState({crossword: createBlankCrossword(name, size)});
     }
 
     closeClueCreator(): void {
@@ -131,45 +153,19 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
         this.selectSquareWithDirection(this.state.selectedSquareIndex, direction);
     }
 
-    updateClue(newClue: Clue, answer: string): void {
-        if (getMaxLengthForClue(newClue, this.state.crossword) >= answer.length) {
-            this.writeAnswerFromClueToGrid(answer, newClue);
-            const indexOfClue = getIndexOfClue(newClue, this.state.crossword);
-            if (indexOfClue !== -1) {
-                this.state.crossword.clues[indexOfClue] = newClue as NumberedClue;
-            } else {
-                this.state.crossword.clues.push(newClue as NumberedClue);
-            }
-            this.setState({crossword: mapCrosswordToNumberedCrossword(this.state.crossword)});
-            this.resetState();
-        }
-    }
-
-    deleteClue(clue: NumberedClue): void {
-        const squares = getSquaresForClue(clue, this.state.crossword);
-        const shouldRemoveClueNumber = this.state.crossword.clues.filter(currentClue =>
-            currentClue.clueNumber === clue.clueNumber
-        ).length <= 1;
-        for(let i = 0; i < clue.length; i++) {
-            squares[i].letter = undefined;
-            if (shouldRemoveClueNumber) {
-                (squares[i] as NumberedSquare).clueNumber = undefined;
-            }
-        }
-        // Remove clue from list
-        this.state.crossword.clues.splice(getIndexOfClue(clue, this.state.crossword), 1);
-        this.setState({crossword: mapCrosswordToNumberedCrossword(this.state.crossword)});
-        this.resetState();
-    }
-
-    selectClue(clue: NumberedClue): void {
-        this.setState({selectedSquareIndex: clue.startingIndex, currentClue: clue});
-    }
-
     writeAnswerFromClueToGrid(answer: string, clue: Clue): void {
         const squares = getSquaresForClue(clue, this.state.crossword);
         for(let i = 0; i < clue.length; i++) {
             squares[i].letter = answer[i].toUpperCase();
+        }
+    }
+
+    addOrUpdateClue(clue: Clue): void {
+        const indexOfClue = getIndexOfClue(clue, this.state.crossword);
+        if (indexOfClue !== -1) {
+            this.state.crossword.clues[indexOfClue] = clue as NumberedClue;
+        } else {
+            this.state.crossword.clues.push(clue as NumberedClue);
         }
     }
 

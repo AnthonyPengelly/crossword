@@ -1,6 +1,6 @@
 import Clue from "../models/clue";
 import Square from "../models/square";
-import Crossword from "../models/crossword";
+import Crossword, { NumberedCrossword } from "../models/crossword";
 import Direction from "../models/direction";
 import {squaresAreNotEmpty} from "./squareHelper";
 
@@ -69,6 +69,13 @@ export function getIndexOfClue(clue: Clue, crossword: Crossword): number {
     return crossword.clues.findIndex(crosswordClue => 
         crosswordClue.startingIndex === clue.startingIndex
             && crosswordClue.direction === clue.direction);
+}
+
+export function crosswordHasMultipleCluesWithNumber(clueNumber: number, crossword: NumberedCrossword): boolean {
+    const clues = crossword.clues.filter(clue =>
+        clue.clueNumber === clueNumber
+    );
+    return clues.length > 1;
 }
 
 export function getIncrementedIndex(index: number, direction: Direction, crossword: Crossword): number {

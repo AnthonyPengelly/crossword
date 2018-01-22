@@ -1,6 +1,7 @@
 import {NumberedCrossword} from "../models/crossword";
-import Square from "../models/square";
+import Square, { NumberedSquare } from "../models/square";
 import {NumberedClue} from "../models/clue";
+import {getSquaresForClue, crosswordHasMultipleCluesWithNumber} from "./clueHelper";
 
 export function squaresAreNotEmpty(squares: Square[]): boolean {
     return !squares.some(square => !square.letter);
@@ -14,4 +15,15 @@ export function getCluesForSquareIndex(index: number, crossword: NumberedCrosswo
             );
         }
         return [];
+}
+
+export function removeClueNumbersIfNeeded(clue: NumberedClue, crossword: NumberedCrossword): void {
+    const squares = getSquaresForClue(clue, crossword);
+    const shouldRemoveClueNumber = !crosswordHasMultipleCluesWithNumber(clue.startingIndex, crossword);
+    for(let i = 0; i < clue.length; i++) {
+        squares[i].letter = undefined;
+        if (shouldRemoveClueNumber) {
+            (squares[i] as NumberedSquare).clueNumber = undefined;
+        }
+    }
 }
