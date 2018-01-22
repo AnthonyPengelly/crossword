@@ -16,6 +16,11 @@ export function getUpdatedSquaresWithAnswer(answer: string, clue: Clue, crosswor
     return squares;
 }
 
+export function getAnswerForClue(clue: Clue, crossword: Crossword): string {
+    const squares = getSquaresForClue(clue, crossword);
+    return squares.map(square => square.letter).join("");
+}
+
 export function answerIsValid(answer: string, clue: Clue): boolean {
     const regex = new RegExp("[a-zA-Z]");
     for (let i = 0; i < answer.length; i++) {

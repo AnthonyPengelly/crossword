@@ -4,6 +4,15 @@ import Crossword from "../models/crossword";
 import Direction from "../models/direction";
 import {squaresAreNotEmpty} from "./squareHelper";
 
+export function createBlankClue(squareIndex: number, direction: Direction): Clue {
+    return {
+        clue: "",
+        length: 0,
+        startingIndex: squareIndex,
+        direction: direction
+    };
+}
+
 export function getUpdatedAnsweredCluesList(crossword: Crossword): number[] {
     const indices: number[] = [];
     crossword.clues.forEach((clue, index) => {
@@ -47,6 +56,13 @@ export function getMaxLengthForClue(clue: Clue, crossword: Crossword): number {
     }
 
     return maxLength;
+}
+
+export function getClueForSquareAndDirection(squareIndex: number, direction: Direction, crossword: Crossword): Clue | undefined {
+    const clue = crossword.clues.find(clue =>
+        clue.startingIndex === squareIndex && clue.direction === direction
+    );
+    return !!clue ? clue : undefined;
 }
 
 export function getIndexOfClue(clue: Clue, crossword: Crossword): number {

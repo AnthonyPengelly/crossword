@@ -1,18 +1,41 @@
 import {default as Crossword, NumberedCrossword} from "../models/crossword";
 import {default as Clue, NumberedClue} from "../models/clue";
 import {NumberedSquare} from "../models/square";
+import Square from "../components/square";
+
+export function createBlankCrossword(name: string, size: number): NumberedCrossword {
+    let squares: NumberedSquare[] = [];
+        for(let i = 0; i < (size * size); i++) {
+            squares.push({isBlank: false});
+        }
+        return {
+            name: name,
+            size: size,
+            squares: squares,
+            clues: []
+        };
+}
 
 export function getEmptyCrosswordFromCrossword(crossword: NumberedCrossword): NumberedCrossword {
-    const squares = crossword.squares.map(square => {return {
-        isBlank: square.isBlank, 
-        clueNumber: square.clueNumber
-    }});
-    return {
-        name: crossword.name,
-        clues: crossword.clues,
-        squares: squares,
-        size: crossword.size
-    };
+    return getCrosswordWithSquareModifier(crossword, (square: NumberedSquare) => {
+        return {
+            isBlank: square.isBlank,
+            clueNumber: square.clueNumber
+        }
+    });
+}
+
+export function getCrosswordForEditing(crossword: NumberedCrossword): NumberedCrossword {
+    if (!crossword) {
+        return undefined;
+    }
+    return getCrosswordWithSquareModifier(crossword, (square: NumberedSquare) => {
+        return {
+            isBlank: false,
+            letter: square.letter,
+            clueNumber: square.clueNumber
+        }
+    });
 }
 
 export function mapCrosswordToNumberedCrossword(crossword: Crossword): NumberedCrossword {
@@ -30,14 +53,27 @@ export function mapCrosswordToNumberedCrossword(crossword: Crossword): NumberedC
 }
 
 function mapCluesToNumberedClues(clues: Clue[]): NumberedClue[] {
-        const sortedClues = clues.sort((a, b) => a.startingIndex - b.startingIndex);
-        let currentIndex = -1;
-        let currentClueNumber = 0;
-        return sortedClues.map(clue => {
-            if (clue.startingIndex > currentIndex) {
-                currentClueNumber++;
-            }
-            currentIndex = clue.startingIndex;
-            return Object.assign({}, clue, {clueNumber: currentClueNumber});
-        });
-    }
+    const sortedClues = clues.sort((a, b) => a.startingIndex - b.startingIndex);
+    let currentIndex = -1;
+    let currentClueNumber = 0;
+    return sortedClues.map(clue => {
+        if (clue.startingIndex > currentIndex) {
+            currentClueNumber++;
+        }
+        currentIndex = clue.startingIndex;
+        return Object.assign({}, clue, {clueNumber: currentClueNumber});
+    });
+}
+
+function getCrosswordWithSquareModifier(
+        crossword: NumberedCrossword,
+        squareModifier: (square: NumberedSquare) => NumberedSquare): NumberedCrossword {
+
+    const squares = crossword.squares.map(square => squareModifier(square));
+    return {
+        name: crossword.name,
+        clues: crossword.clues,
+        squares: squares,
+        size: crossword.size
+    };
+}
