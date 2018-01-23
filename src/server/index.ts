@@ -4,6 +4,17 @@ import Database from "./database/database";
 import MemoryCrosswordDatabase from "./database/memoryCrosswordDatabase";
 import Crossword from "../shared/models/crossword";
 import CrosswordService from "./services/crosswordService";
+import initialiseSequelize from "./database/sequelizeSetup";
+
+import DatabaseCrossword from "./database/models/crossword";
+import DatabaseSquare from "./database/models/square";
+import DatabaseClue from "./database/models/clue";
+const lucy = JSON.parse(require("../client/lucys-crossword.json"));
+initialiseSequelize()
+    .then(() => {
+        DatabaseCrossword.create(lucy, {include: [DatabaseSquare, DatabaseClue]})
+            .then(() => console.log("it worked!"));
+    });
 
 const database: Database<Crossword> = new MemoryCrosswordDatabase();
 const crosswordService = new CrosswordService(database);
@@ -37,6 +48,5 @@ app.post("/api/crosswords", (req, res) => {
 app.delete("/api/crosswords/:id", (req, res) => {
     res.send(crosswordService.delete(req.params.id));
 });
-
 
 app.listen(3000, () => console.log("Listening on port 3000"));
