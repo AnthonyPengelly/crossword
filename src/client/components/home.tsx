@@ -1,9 +1,8 @@
 import * as React from "react";
 import Crossword from "../../shared/models/crossword";
 import Router from "../components/router";
-import testCrossword from "../testCrossword";
-import {mapCrosswordToNumberedCrossword, getEmptyCrosswordFromCrossword} from "../../shared/helpers/crosswordHelper";
-const LucysCrossword = JSON.parse(require("../lucys-crossword.json"));
+import {getEmptyCrosswordFromCrossword} from "../../shared/helpers/crosswordHelper";
+import crosswordApi from "../api/crosswordApi";
 
 interface HomeState {
     crosswords: Crossword[];
@@ -14,11 +13,16 @@ interface HomeState {
 export default class Home extends React.Component<{}, HomeState> {
     constructor(props: {}) {
         super(props);
-        this.state = {crosswords: [mapCrosswordToNumberedCrossword(testCrossword), LucysCrossword], shouldCreate: false};
+        this.state = {crosswords: [], shouldCreate: false};
         this.returnToList = this.returnToList.bind(this);
         this.openCrossword = this.openCrossword.bind(this);
         this.openCrosswordCreator = this.openCrosswordCreator.bind(this);
         this.createCrossword = this.createCrossword.bind(this);
+    }
+
+    async componentDidMount() {
+        const crosswords = await crosswordApi.getAll();
+        this.setState({crosswords: crosswords});
     }
     
     render(): JSX.Element {
@@ -48,6 +52,7 @@ export default class Home extends React.Component<{}, HomeState> {
     }
 
     createCrossword(crossword: Crossword): void {
+        crosswordApi.createOrUpdate(crossword);
         if (this.state.currentCrossword !== undefined) {
             this.state.crosswords.splice(this.state.crosswords.indexOf(this.state.currentCrossword), 1);
         }
