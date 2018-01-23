@@ -5,31 +5,31 @@ import {getCrosswordForEditing, getEmptyCrosswordFromCrossword} from "../../shar
 export default class CrosswordService {
     constructor(public crosswordDatabase: Database<Crossword>) {}
 
-    getAll() {
-        return this.crosswordDatabase.getAll()
-            .map(getEmptyCrosswordFromCrossword);
+    async getAll() {
+        const crosswords = await this.crosswordDatabase.getAll();
+        return crosswords.map(getEmptyCrosswordFromCrossword);
     }
 
-    getByName(name: string) {
-        const crossword = this.crosswordDatabase.getById(name);
+    async getById(id: number) {
+        const crossword = await this.crosswordDatabase.getById(id);
         return getEmptyCrosswordFromCrossword(crossword);
     }
 
-    getForEditing(name: string) {
-        const crossword = this.crosswordDatabase.getById(name);
+    async getForEditing(id: number) {
+        const crossword = await this.crosswordDatabase.getById(id);
         return getCrosswordForEditing(crossword);
 
     }
 
-    getComplete(name: string) {        
-        return this.crosswordDatabase.getById(name);
+    async getComplete(id: number) {
+        return await this.crosswordDatabase.getById(id);
     }
 
     createOrUpdate(crossword: Crossword) {
         this.crosswordDatabase.createOrUpdate(crossword);
     }
 
-    delete(name: string) {
-        this.crosswordDatabase.delete(name);
+    delete(id: number) {
+        this.crosswordDatabase.delete(id);
     }
 }
