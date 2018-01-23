@@ -1,13 +1,12 @@
 import * as React from "react";
-import {NumberedCrossword} from "../../shared/models/crossword";
-import {default as SquareModel, NumberedSquare} from "../../shared/models/square";
-import { NumberedClue, default as Clue } from "../../shared/models/clue";
+import Crossword from "../../shared/models/crossword";
+import SquareModel from "../../shared/models/square";
+import Clue from "../../shared/models/clue";
 import Direction from "../../shared/models/direction";
 import Grid from "./grid";
 import Clues from "./clues";
 import ClueEditor from "./clueEditor";
 import CrosswordDetailsInput from "./crosswordDetailsInput";
-import Crossword from "./crossword";
 import {mapCrosswordToNumberedCrossword, getCrosswordForEditing, createBlankCrossword} from "../../shared/helpers/crosswordHelper";
 import { getAnswerForClue } from "../../shared/helpers/answerHelper";
 import {getSquaresForClue, getMaxLengthForClue, getMaxSquaresForClue,
@@ -15,13 +14,13 @@ import {getSquaresForClue, getMaxLengthForClue, getMaxSquaresForClue,
 import { removeClueNumbersIfNeeded } from "../../shared/helpers/squareHelper";
 
 interface CrosswordCreatorProps {
-    crossword?: NumberedCrossword;
+    crossword?: Crossword;
     returnToList: () => void;
-    createCrossword: (crossword: NumberedCrossword) => void;
+    createCrossword: (crossword: Crossword) => void;
 }
 
 interface CrosswordCreatorState {
-    crossword: NumberedCrossword;
+    crossword: Crossword;
     selectedIndices: number[];
     selectedSquareIndex?: number;
     currentClue?: Clue;
@@ -105,7 +104,7 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
         }
     }
 
-    deleteClue(clue: NumberedClue): void {
+    deleteClue(clue: Clue): void {
         removeClueNumbersIfNeeded(clue, this.state.crossword);
         // Remove clue from list
         this.state.crossword.clues.splice(getIndexOfClue(clue, this.state.crossword), 1);
@@ -113,7 +112,7 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
         this.resetState();
     }
 
-    selectClue(clue: NumberedClue): void {
+    selectClue(clue: Clue): void {
         this.setState({selectedSquareIndex: clue.startingIndex, currentClue: clue});
     }
 
@@ -138,7 +137,7 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
     selectSquareWithDirection(squareIndex: number, direction: Direction): void {
         let clue = getClueForSquareAndDirection(squareIndex, direction, this.state.crossword);
         if (!clue) {
-            clue = createBlankClue(squareIndex, direction);
+            clue = createBlankClue(squareIndex, direction) as Clue;
         }
         this.setState({selectedSquareIndex: squareIndex, currentClue: clue});
     }
@@ -157,9 +156,9 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
     addOrUpdateClue(clue: Clue): void {
         const indexOfClue = getIndexOfClue(clue, this.state.crossword);
         if (indexOfClue !== -1) {
-            this.state.crossword.clues[indexOfClue] = clue as NumberedClue;
+            this.state.crossword.clues[indexOfClue] = clue as Clue;
         } else {
-            this.state.crossword.clues.push(clue as NumberedClue);
+            this.state.crossword.clues.push(clue as Clue);
         }
     }
 

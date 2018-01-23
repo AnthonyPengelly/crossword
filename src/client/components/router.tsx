@@ -1,17 +1,17 @@
 import * as React from "react";
-import {NumberedCrossword} from "../../shared/models/crossword";
+import CrosswordModel from "../../shared/models/crossword";
 import CrosswordList from "../components/crosswordList";
 import Crossword from "../components/crossword";
 import CrosswordCreator from "../components/crosswordCreator";
 
 interface RouterProps {
-    crosswords: NumberedCrossword[];
+    crosswords: CrosswordModel[];
     shouldCreate: boolean;
-    currentCrossword?: NumberedCrossword;
+    currentCrossword?: CrosswordModel;
     returnToList: () => void;
-    openCrossword: (crossword: NumberedCrossword) => void;
-    openCrosswordCreator: (crossword: NumberedCrossword) => void;
-    createCrossword: (crossword: NumberedCrossword) => void;
+    openCrossword: (crossword: CrosswordModel) => void;
+    openCrosswordCreator: (crossword: CrosswordModel) => void;
+    createCrossword: (crossword: CrosswordModel) => void;
 }
 
 export default class Router extends React.Component<RouterProps, {}> {

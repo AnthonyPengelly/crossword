@@ -1,5 +1,5 @@
 import * as React from "react";
-import {default as ClueModel, NumberedClue} from "../../shared/models/clue";
+import {default as ClueModel} from "../../shared/models/clue";
 import Direction from "../../shared/models/direction";
 import {answerIsValid} from "../../shared/helpers/answerHelper";
 

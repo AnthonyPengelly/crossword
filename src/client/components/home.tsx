@@ -1,14 +1,14 @@
 import * as React from "react";
-import {NumberedCrossword} from "../../shared/models/crossword";
+import Crossword from "../../shared/models/crossword";
 import Router from "../components/router";
 import testCrossword from "../testCrossword";
 import {mapCrosswordToNumberedCrossword, getEmptyCrosswordFromCrossword} from "../../shared/helpers/crosswordHelper";
 const LucysCrossword = JSON.parse(require("../lucys-crossword.json"));
 
 interface HomeState {
-    crosswords: NumberedCrossword[];
+    crosswords: Crossword[];
     shouldCreate: boolean;
-    currentCrossword?: NumberedCrossword;
+    currentCrossword?: Crossword;
 }
 
 export default class Home extends React.Component<{}, HomeState> {
@@ -39,15 +39,15 @@ export default class Home extends React.Component<{}, HomeState> {
         this.setState({currentCrossword: undefined, shouldCreate: false});
     }
 
-    openCrossword(crossword: NumberedCrossword) {
+    openCrossword(crossword: Crossword) {
         this.setState({currentCrossword: getEmptyCrosswordFromCrossword(crossword)});
     }
 
-    openCrosswordCreator(crossword: NumberedCrossword) {
+    openCrosswordCreator(crossword: Crossword) {
         this.setState({shouldCreate: true, currentCrossword: crossword});
     }
 
-    createCrossword(crossword: NumberedCrossword): void {
+    createCrossword(crossword: Crossword): void {
         if (this.state.currentCrossword !== undefined) {
             this.state.crosswords.splice(this.state.crosswords.indexOf(this.state.currentCrossword), 1);
         }

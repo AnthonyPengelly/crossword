@@ -1,7 +1,7 @@
 import * as React from "react";
-import {NumberedCrossword} from "../../shared/models/crossword";
+import CrosswordModel from "../../shared/models/crossword";
 import SquareModel from "../../shared/models/square";
-import {NumberedClue} from "../../shared/models/clue";
+import Clue from "../../shared/models/clue";
 import Direction from "../../shared/models/direction";
 import Grid from "./grid";
 import Square from "./square";
@@ -12,14 +12,14 @@ import {getCluesForSquareIndex} from "../../shared/helpers/squareHelper";
 import {getUpdatedSquaresWithAnswer} from "../../shared/helpers/answerHelper";
 
 interface CrosswordProps {
-    crossword: NumberedCrossword;
+    crossword: CrosswordModel;
     returnToList: () => void;
 }
 
 interface CrosswordState {
-    crossword: NumberedCrossword;
+    crossword: CrosswordModel;
     answeredClues: number[];
-    selectedClue?: NumberedClue;
+    selectedClue?: Clue;
 }
 
 export default class Crossword extends React.Component<CrosswordProps, CrosswordState> {
@@ -85,7 +85,7 @@ export default class Crossword extends React.Component<CrosswordProps, Crossword
         }
     }
 
-    selectClue(clue: NumberedClue): void {
+    selectClue(clue: Clue): void {
         this.setState({selectedClue: clue});
     }
 
@@ -93,7 +93,7 @@ export default class Crossword extends React.Component<CrosswordProps, Crossword
         this.setState({selectedClue: undefined});
     }
 
-    updateAnswer(clue: NumberedClue, answer: string) {
+    updateAnswer(clue: Clue, answer: string) {
         this.state.crossword.squares = getUpdatedSquaresWithAnswer(answer, clue, this.state.crossword);
         this.setState({
             answeredClues: getUpdatedAnsweredCluesList(this.state.crossword)

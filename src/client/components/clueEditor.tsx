@@ -1,5 +1,5 @@
 import * as React from "react";
-import {default as ClueModel, NumberedClue} from "../../shared/models/clue";
+import ClueModel from "../../shared/models/clue";
 import Direction from "../../shared/models/direction";
 import {answerIsValid} from "../../shared/helpers/answerHelper";
 
@@ -65,12 +65,12 @@ export default class ClueEditor extends React.Component<ClueEditorProps, ClueEdi
 
     private handleSubmit(event: React.FormEvent<HTMLElement>) {
         event.preventDefault();
-        const clue: ClueModel = {
+        const clue = {
             clue: this.state.clue,
             length: this.state.answer.length,
             startingIndex: this.props.clue.startingIndex,
             direction: this.props.clue.direction
-        };
+        } as ClueModel;
         if (answerIsValid(this.state.answer, clue)) {
             this.props.updateClue(clue, this.state.answer);
         }

@@ -1,10 +1,10 @@
-import Clue from "../models/clue";
+import Clue, {RawClue} from "../models/clue";
 import Square from "../models/square";
-import Crossword, { NumberedCrossword } from "../models/crossword";
+import Crossword from "../models/crossword";
 import Direction from "../models/direction";
 import {squaresAreNotEmpty} from "./squareHelper";
 
-export function createBlankClue(squareIndex: number, direction: Direction): Clue {
+export function createBlankClue(squareIndex: number, direction: Direction): RawClue {
     return {
         clue: "",
         length: 0,
@@ -23,7 +23,7 @@ export function getUpdatedAnsweredCluesList(crossword: Crossword): number[] {
     return indices;
 }
 
-export function getSquaresForClue(clue: Clue, crossword: Crossword): Square[] {
+export function getSquaresForClue(clue: RawClue, crossword: Crossword): Square[] {
     let squares: Square[] = [];
     for(let i = 0; i < clue.length; i++) {
         if (clue.direction === Direction.Across) {
@@ -37,7 +37,7 @@ export function getSquaresForClue(clue: Clue, crossword: Crossword): Square[] {
 
 export function getMaxSquaresForClue(clue: Clue, crossword: Crossword): Square[] {
     const maxLength = getMaxLengthForClue(clue, crossword);
-    const mockClue: Clue = {
+    const mockClue: RawClue = {
         clue: clue.clue,
         startingIndex: clue.startingIndex,
         direction: clue.direction,
@@ -71,7 +71,7 @@ export function getIndexOfClue(clue: Clue, crossword: Crossword): number {
             && crosswordClue.direction === clue.direction);
 }
 
-export function crosswordHasMultipleCluesWithNumber(clueNumber: number, crossword: NumberedCrossword): boolean {
+export function crosswordHasMultipleCluesWithNumber(clueNumber: number, crossword: Crossword): boolean {
     const clues = crossword.clues.filter(clue =>
         clue.clueNumber === clueNumber
     );

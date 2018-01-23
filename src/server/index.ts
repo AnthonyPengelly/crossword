@@ -2,7 +2,7 @@ import * as express from "express";
 import * as bodyParser from "body-parser";
 import Database from "./database/database";
 import MemoryCrosswordDatabase from "./database/memoryCrosswordDatabase";
-import {NumberedCrossword as Crossword} from "../shared/models/crossword";
+import Crossword from "../shared/models/crossword";
 import CrosswordService from "./services/crosswordService";
 
 const database: Database<Crossword> = new MemoryCrosswordDatabase();

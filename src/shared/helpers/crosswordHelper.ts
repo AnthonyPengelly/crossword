@@ -1,9 +1,9 @@
-import {default as Crossword, NumberedCrossword} from "../models/crossword";
-import {default as Clue, NumberedClue} from "../models/clue";
-import {NumberedSquare} from "../models/square";
+import Crossword, {RawCrossword} from "../models/crossword";
+import Clue, {RawClue} from "../models/clue";
+import Square from "../models/square";
 
-export function createBlankCrossword(name: string, size: number): NumberedCrossword {
-    let squares: NumberedSquare[] = [];
+export function createBlankCrossword(name: string, size: number): Crossword {
+    let squares: Square[] = [];
         for(let i = 0; i < (size * size); i++) {
             squares.push({isBlank: false});
         }
@@ -15,8 +15,8 @@ export function createBlankCrossword(name: string, size: number): NumberedCrossw
         };
 }
 
-export function getEmptyCrosswordFromCrossword(crossword: NumberedCrossword): NumberedCrossword {
-    return getCrosswordWithSquareModifier(crossword, (square: NumberedSquare) => {
+export function getEmptyCrosswordFromCrossword(crossword: Crossword): Crossword {
+    return getCrosswordWithSquareModifier(crossword, (square: Square) => {
         return {
             isBlank: square.isBlank,
             clueNumber: square.clueNumber
@@ -24,11 +24,11 @@ export function getEmptyCrosswordFromCrossword(crossword: NumberedCrossword): Nu
     });
 }
 
-export function getCrosswordForEditing(crossword: NumberedCrossword): NumberedCrossword {
+export function getCrosswordForEditing(crossword: Crossword): Crossword {
     if (!crossword) {
         return undefined;
     }
-    return getCrosswordWithSquareModifier(crossword, (square: NumberedSquare) => {
+    return getCrosswordWithSquareModifier(crossword, (square: Square) => {
         return {
             isBlank: false,
             letter: square.letter,
@@ -37,9 +37,9 @@ export function getCrosswordForEditing(crossword: NumberedCrossword): NumberedCr
     });
 }
 
-export function mapCrosswordToNumberedCrossword(crossword: Crossword): NumberedCrossword {
+export function mapCrosswordToNumberedCrossword(crossword: RawCrossword): Crossword {
     const numberedClues = mapCluesToNumberedClues(crossword.clues);
-    const numberedSquares = crossword.squares as NumberedSquare[];
+    const numberedSquares = crossword.squares as Square[];
     numberedClues.forEach(clue => {
         numberedSquares[clue.startingIndex].clueNumber = clue.clueNumber;
     });
@@ -51,7 +51,7 @@ export function mapCrosswordToNumberedCrossword(crossword: Crossword): NumberedC
     };
 }
 
-function mapCluesToNumberedClues(clues: Clue[]): NumberedClue[] {
+function mapCluesToNumberedClues(clues: RawClue[]): Clue[] {
     const sortedClues = clues.sort((a, b) => a.startingIndex - b.startingIndex);
     let currentIndex = -1;
     let currentClueNumber = 0;
@@ -65,8 +65,8 @@ function mapCluesToNumberedClues(clues: Clue[]): NumberedClue[] {
 }
 
 function getCrosswordWithSquareModifier(
-        crossword: NumberedCrossword,
-        squareModifier: (square: NumberedSquare) => NumberedSquare): NumberedCrossword {
+        crossword: Crossword,
+        squareModifier: (square: Square) => Square): Crossword {
 
     const squares = crossword.squares.map(square => squareModifier(square));
     return {

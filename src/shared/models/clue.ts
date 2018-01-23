@@ -1,12 +1,11 @@
 import Direction from "./direction";
 
-interface Clue {
+export interface RawClue {
     clue: string;
     length: number;
     startingIndex: number;
     direction: Direction;
 }
 
-export type NumberedClue = Clue & {clueNumber: number};
-
+type Clue = RawClue & {clueNumber: number};
 export default Clue;

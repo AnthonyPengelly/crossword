@@ -1,5 +1,5 @@
 import * as React from "react";
-import CrosswordModel from "../../shared/models/crossword";
+import Crossword from "../../shared/models/crossword";
 import SquareModel from "../../shared/models/square";
 import ClueModel from "../../shared/models/clue";
 import Direction from "../../shared/models/direction";
@@ -7,7 +7,7 @@ import Square from "./square";
 import Clues from "./clues";
 
 interface GridProps {
-    crossword: CrosswordModel;
+    crossword: Crossword;
     selectedIndices: number[];
     onSquareClick: (index: number) => void;
 }

@@ -1,5 +1,5 @@
 import Database from "../database/database";
-import {NumberedCrossword as Crossword} from "../../shared/models/crossword";
+import Crossword from "../../shared/models/crossword";
 import {getCrosswordForEditing, getEmptyCrosswordFromCrossword} from "../../shared/helpers/crosswordHelper";
 
 export default class CrosswordService {

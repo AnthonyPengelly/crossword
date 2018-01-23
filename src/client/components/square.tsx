@@ -1,8 +1,8 @@
 import * as React from "react";
-import {NumberedSquare} from "../../shared/models/square";
+import SquareModel from "../../shared/models/square";
 
 interface SquareProps {
-    square: NumberedSquare;
+    square: SquareModel;
     isSelected: boolean;
     className: string;
     onSquareClick: () => void;

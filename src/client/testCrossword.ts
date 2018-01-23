@@ -1,7 +1,7 @@
-import Crossword from "../shared/models/crossword";
+import {RawCrossword} from "../shared/models/crossword";
 import Direction from "../shared/models/direction";
 
-const crossword: Crossword = {
+const crossword: RawCrossword = {
     name: "Easy Crossword",
     size: 8,
     squares: [

@@ -1,15 +1,15 @@
 import * as React from "react";
-import {NumberedClue} from "../../shared/models/clue";
+import ClueModel from "../../shared/models/clue";
 import Direction from "../../shared/models/direction";
 import Clue from "../components/clue";
 
 interface CluesProps {
-    clues: NumberedClue[];
+    clues: ClueModel[];
     answeredCluesIndices: number[];
-    selectClue: (clue: NumberedClue) => void;
+    selectClue: (clue: ClueModel) => void;
 }
 
-type AnswerableClue = NumberedClue & {answered: boolean};
+type AnswerableClue = ClueModel & {answered: boolean};
 
 export default class Clues extends React.Component<CluesProps, {}> {
     constructor(props: CluesProps) {
@@ -42,7 +42,7 @@ export default class Clues extends React.Component<CluesProps, {}> {
         ));
     }
 
-    mapToAnswerableClue(clue: NumberedClue, index: number): AnswerableClue {
+    mapToAnswerableClue(clue: ClueModel, index: number): AnswerableClue {
         (clue as AnswerableClue).answered = this.isAnswered(index);
         return clue as AnswerableClue;
     }

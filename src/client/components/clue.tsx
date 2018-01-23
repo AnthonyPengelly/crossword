@@ -1,8 +1,8 @@
 import * as React from "react";
-import {default as ClueModel, NumberedClue} from "../../shared/models/clue";
+import ClueModel from "../../shared/models/clue";
 
 interface ClueProps {
-    clue: NumberedClue;
+    clue: ClueModel;
     answered: boolean;
     selectClue: (clue: ClueModel) => void;
 }
