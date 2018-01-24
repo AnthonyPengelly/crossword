@@ -38,6 +38,7 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
         this.changeDirection = this.changeDirection.bind(this);
         this.updateClue = this.updateClue.bind(this);
         this.deleteClue = this.deleteClue.bind(this);
+        this.handleNameChange = this.handleNameChange.bind(this);
     }
 
     componentWillReceiveProps(newProps: CrosswordCreatorProps): void {
@@ -60,7 +61,9 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
         } else {
             return (
                 <React.Fragment>
-                    <h2>{this.state.crossword.name}</h2>
+                    <div>
+                        <input type="text" name="name" value={this.state.crossword.name} onChange={this.handleNameChange} maxLength={100} />
+                    </div>
                     <Grid crossword={this.state.crossword} selectedIndices={this.getSelectedIndices()} onSquareClick={this.selectSquare} />
                     <Clues clues={this.state.crossword.clues} selectClue={this.selectClue} answeredCluesIndices={[]} />
                     {this.renderClueEditor()}
@@ -84,6 +87,11 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
                 />
             );
         }
+    }
+
+    handleNameChange(event: React.FormEvent<HTMLInputElement>) {
+        this.state.crossword.name = event.currentTarget.value;
+        this.setState({crossword: this.state.crossword});
     }
 
     completeCrossword(): void {
