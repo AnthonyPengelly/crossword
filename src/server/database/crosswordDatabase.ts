@@ -13,44 +13,26 @@ export default class CrosswordDatabase extends Database<Crossword> {
         this.database = initialiseDatabase();
     }
 
-    getAll(): Promise<Crossword[]> {
+    async getAll(): Promise<Crossword[]> {
         const params = {
             TableName: CrosswordDatabase.TABLE_NAME
         };
-        return new Promise((resolve, reject) => {
-            this.database.scan(params, (err, data) => {
-                if(err) {
-                    reject(err);
-                } else {
-                    const crosswords = data.Items.map(item => (item.Crossword as Crossword));
-                    resolve(crosswords);
-                }
-            });
-        });
+        const result = await this.database.scan(params).promise();
+        return result.Items.map(item => item.Crossword as Crossword);
     }
 
-    getById(id: string): Promise<Crossword> {
+    async getById(id: string): Promise<Crossword> {
         const params = {
             TableName: CrosswordDatabase.TABLE_NAME,
             Key: {
                 HashKey: id
             }
         };
-        return new Promise((resolve, reject) => {
-            this.database.get(params, (err, data) => {
-                if(err) {
-                    reject(err);
-                } else {
-                    if (data && data.Item && data.Item.HashKey === id) {
-                        resolve(data.Item.Crossword as Crossword);
-                    }
-                    reject("Unable to find Crossword with id " + id);
-                }
-            });
-        });
+        const result = await this.database.get(params).promise();
+        return result.Item.Crossword as Crossword;
     }
 
-    createOrUpdate(item: Crossword): Promise<Crossword> {
+    async createOrUpdate(item: Crossword): Promise<Crossword> {
         if (!item.id) {
             item.id = this.generateUniqueId();
         }
@@ -61,34 +43,20 @@ export default class CrosswordDatabase extends Database<Crossword> {
                 Crossword: item
             }
         };
-        return new Promise((resolve, reject) => {
-            this.database.put(params, (err, data) => {
-                if(err) {
-                    reject(err);
-                } else {
-                    resolve(item);
-                }
-            });
-        });
+        await this.database.put(params).promise();
+        return item;
     }
 
-    delete(id: string): Promise<void> {
+    async delete(id: string): Promise<void> {
         var params = {
             TableName : CrosswordDatabase.TABLE_NAME,
             Key: {
                 HashKey: id
             }
         };
-        return new Promise((resolve, reject) => {
-            this.database.delete(params, function(err, data) {
-                if(err) {
-                    reject(err);
-                } else {
-                    console.log(`Crossword with id ${id} deleted successfully`);
-                    resolve();
-                }
-            });
-        });
+        await this.database.delete(params).promise();
+        console.log(`Successfully deleted crossword with id ${id}`);
+        return;
     }
 
     private generateUniqueId(): string {

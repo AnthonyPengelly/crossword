@@ -13,35 +13,56 @@ app.use(bodyParser.json());
 
 app.use(express.static('dist/public'));
 
-app.get("/api/crosswords", async (req, res) => {
-    const crosswords = await crosswordService.getAll();
-    res.send(crosswords);
+app.get("/api/crosswords", (req, res) => {
+    respondSafely(res, async () => {
+        const crosswords = await crosswordService.getAll();
+        res.send(crosswords);
+    });
 });
 
-app.get("/api/crosswords/:id", async (req, res) => {
-    const crossword = await crosswordService.getById(req.params.id);
-    res.send(crossword);
+app.get("/api/crosswords/:id", (req, res) => {
+    respondSafely(res, async () => {
+        const crossword = await crosswordService.getById(req.params.id);
+        res.send(crossword);
+    });
 });
 
-app.get("/api/crosswords/:id/edit", async (req, res) => {
-    const crossword = await crosswordService.getForEditing(req.params.id);
-    res.send(crossword);
+app.get("/api/crosswords/:id/edit", (req, res) => {
+    respondSafely(res, async () => {
+        const crossword = await crosswordService.getForEditing(req.params.id);
+        res.send(crossword);
+    });
 });
 
-app.get("/api/crosswords/:id/complete", async (req, res) => {
-    const crossword = await crosswordService.getComplete(req.params.id);
-    res.send(crossword);
+app.get("/api/crosswords/:id/complete", (req, res) => {
+    respondSafely(res, async () => {
+        const crossword = await crosswordService.getComplete(req.params.id);
+        res.send(crossword);
+    });
 });
 
-app.post("/api/crosswords", async (req, res) => {
-    const crossword: Crossword = req.body;
-    const newCrossword = await crosswordService.createOrUpdate(crossword);
-    res.send(newCrossword);
+app.post("/api/crosswords", (req, res) => {
+    respondSafely(res, async () => {
+        const crossword: Crossword = req.body;
+        const newCrossword = await crosswordService.createOrUpdate(crossword);
+        res.send(newCrossword);
+    });
 });
 
-app.delete("/api/crosswords/:id", async (req, res) => {
-    await crosswordService.delete(req.params.id);
-    res.send();
+app.delete("/api/crosswords/:id", (req, res) => {
+    respondSafely(res, async () => {
+        await crosswordService.delete(req.params.id);
+        res.send();
+    });
 });
+
+const respondSafely = async (res: express.Response, respondToRequest: () => Promise<void>) => {
+    try {
+        await respondToRequest();
+    } catch(error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
 
 app.listen(3000, () => console.log("Listening on port 3000"));
