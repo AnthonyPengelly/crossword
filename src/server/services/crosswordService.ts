@@ -10,18 +10,18 @@ export default class CrosswordService {
         return crosswords.map(getEmptyCrosswordFromCrossword);
     }
 
-    async getById(id: number) {
+    async getById(id: string) {
         const crossword = await this.crosswordDatabase.getById(id);
         return getEmptyCrosswordFromCrossword(crossword);
     }
 
-    async getForEditing(id: number) {
+    async getForEditing(id: string) {
         const crossword = await this.crosswordDatabase.getById(id);
         return getCrosswordForEditing(crossword);
 
     }
 
-    async getComplete(id: number) {
+    async getComplete(id: string) {
         return await this.crosswordDatabase.getById(id);
     }
 
@@ -29,7 +29,7 @@ export default class CrosswordService {
         this.crosswordDatabase.createOrUpdate(crossword);
     }
 
-    delete(id: number) {
+    delete(id: string) {
         this.crosswordDatabase.delete(id);
     }
 }

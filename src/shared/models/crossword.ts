@@ -9,7 +9,7 @@ export interface RawCrossword {
 }
 
 export default interface Crossword {
-    id?: number;
+    id?: string;
     name: string;
     squares: Square[];
     clues: Clue[];

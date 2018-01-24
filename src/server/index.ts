@@ -4,7 +4,6 @@ import Database from "./database/database";
 import CrosswordDatabase from "./database/crosswordDatabase";
 import Crossword from "../shared/models/crossword";
 import CrosswordService from "./services/crosswordService";
-import initialiseSequelize from "./database/sequelizeSetup";
 
 const database: Database<Crossword> = new CrosswordDatabase();
 const crosswordService = new CrosswordService(database);
