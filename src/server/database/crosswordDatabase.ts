@@ -20,9 +20,10 @@ export default class CrosswordDatabase extends Database<Crossword> {
         return new Promise((resolve, reject) => {
             this.database.scan(params, (err, data) => {
                 if(err) {
-                    console.log(err);
+                    reject(err);
                 } else {
-                    console.log((data.Items[0].Crossword as Crossword));
+                    const crosswords = data.Items.map(item => (item.Crossword as Crossword));
+                    resolve(crosswords);
                 }
             });
         });
@@ -35,18 +36,21 @@ export default class CrosswordDatabase extends Database<Crossword> {
                 HashKey: id
             }
         };
-        return new Promise(() => {
+        return new Promise((resolve, reject) => {
             this.database.get(params, (err, data) => {
                 if(err) {
-                    console.log(err);
+                    reject(err);
                 } else {
-                    console.log(data);
+                    if (data && data.Item && data.Item.HashKey === id) {
+                        resolve(data.Item.Crossword as Crossword);
+                    }
+                    reject("Unable to find Crossword with id " + id);
                 }
             });
         });
     }
 
-    createOrUpdate(item: Crossword): void {
+    createOrUpdate(item: Crossword): Promise<Crossword> {
         if (!item.id) {
             item.id = this.generateUniqueId();
         }
@@ -57,35 +61,38 @@ export default class CrosswordDatabase extends Database<Crossword> {
                 Crossword: item
             }
         };
-        this.database.put(params, (err, data) => {
-            if(err) {
-                console.log(err);
-            } else {
-                console.log(data);
-            }
+        return new Promise((resolve, reject) => {
+            this.database.put(params, (err, data) => {
+                if(err) {
+                    reject(err);
+                } else {
+                    resolve(item);
+                }
+            });
         });
     }
 
-    delete(id: string): void {
+    delete(id: string): Promise<void> {
         var params = {
             TableName : CrosswordDatabase.TABLE_NAME,
             Key: {
-              HashKey: id,
-              NumberRangeKey: 1
+                HashKey: id
             }
-          };
-          this.database.delete(params, function(err, data) {
-            if(err) {
-                console.log(err);
-            } else {
-                console.log(data);
-            }
-          });
+        };
+        return new Promise((resolve, reject) => {
+            this.database.delete(params, function(err, data) {
+                if(err) {
+                    reject(err);
+                } else {
+                    console.log(`Crossword with id ${id} deleted successfully`);
+                    resolve();
+                }
+            });
+        });
     }
 
     private generateUniqueId(): string {
         const id = uuid();
-        console.log("generated id: " + id);
         return id;
     }
 }

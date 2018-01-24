@@ -70,6 +70,7 @@ function getCrosswordWithSquareModifier(
 
     const squares = crossword.squares.map(square => squareModifier(square));
     return {
+        id: crossword.id,
         name: crossword.name,
         clues: crossword.clues,
         squares: squares,

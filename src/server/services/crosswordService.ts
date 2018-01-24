@@ -21,15 +21,15 @@ export default class CrosswordService {
 
     }
 
-    async getComplete(id: string) {
-        return await this.crosswordDatabase.getById(id);
+    getComplete(id: string) {
+        return this.crosswordDatabase.getById(id);
     }
 
     createOrUpdate(crossword: Crossword) {
-        this.crosswordDatabase.createOrUpdate(crossword);
+        return this.crosswordDatabase.createOrUpdate(crossword);
     }
 
     delete(id: string) {
-        this.crosswordDatabase.delete(id);
+        return this.crosswordDatabase.delete(id);
     }
 }

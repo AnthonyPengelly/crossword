@@ -24,22 +24,24 @@ app.get("/api/crosswords/:id", async (req, res) => {
 });
 
 app.get("/api/crosswords/:id/edit", async (req, res) => {
-    const crossword = crosswordService.getForEditing(req.params.id);
+    const crossword = await crosswordService.getForEditing(req.params.id);
     res.send(crossword);
 });
 
 app.get("/api/crosswords/:id/complete", async (req, res) => {
-    const crossword = crosswordService.getComplete(req.params.id);
+    const crossword = await crosswordService.getComplete(req.params.id);
     res.send(crossword);
 });
 
-app.post("/api/crosswords", (req, res) => {
+app.post("/api/crosswords", async (req, res) => {
     const crossword: Crossword = req.body;
-    res.send(crosswordService.createOrUpdate(crossword));
+    const newCrossword = await crosswordService.createOrUpdate(crossword);
+    res.send(newCrossword);
 });
 
-app.delete("/api/crosswords/:id", (req, res) => {
-    res.send(crosswordService.delete(req.params.id));
+app.delete("/api/crosswords/:id", async (req, res) => {
+    await crosswordService.delete(req.params.id);
+    res.send();
 });
 
 app.listen(3000, () => console.log("Listening on port 3000"));
