@@ -7,7 +7,7 @@ import Grid from "./grid";
 import Clues from "./clues";
 import ClueEditor from "./clueEditor";
 import CrosswordDetailsInput from "./crosswordDetailsInput";
-import {mapCrosswordToNumberedCrossword, getCrosswordForEditing, createBlankCrossword} from "../../shared/helpers/crosswordHelper";
+import {mapCrosswordToNumberedCrossword, createBlankCrossword} from "../../shared/helpers/crosswordHelper";
 import { getAnswerForClue } from "../../shared/helpers/answerHelper";
 import {getSquaresForClue, getMaxLengthForClue, getMaxSquaresForClue,
     getIndexOfClue, createBlankClue, getClueForSquareAndDirection} from "../../shared/helpers/clueHelper";
@@ -29,7 +29,7 @@ interface CrosswordCreatorState {
 export default class CrosswordCreator extends React.Component<CrosswordCreatorProps, CrosswordCreatorState> {
     constructor(props: CrosswordCreatorProps) {
         super(props);
-        this.state = {crossword: getCrosswordForEditing(props.crossword), selectedIndices: []};
+        this.state = {crossword: props.crossword, selectedIndices: []};
         this.createBlankCrossword = this.createBlankCrossword.bind(this);
         this.completeCrossword = this.completeCrossword.bind(this);
         this.selectSquare = this.selectSquare.bind(this);
@@ -41,7 +41,7 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
     }
 
     componentWillReceiveProps(newProps: CrosswordCreatorProps): void {
-        this.setState({crossword: getCrosswordForEditing(newProps.crossword)});
+        this.setState({crossword: newProps.crossword});
     }
     
     render(): JSX.Element {

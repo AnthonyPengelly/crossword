@@ -44,6 +44,7 @@ export function mapCrosswordToNumberedCrossword(crossword: RawCrossword): Crossw
         numberedSquares[clue.startingIndex].clueNumber = clue.clueNumber;
     });
     return {
+        id: (crossword as Crossword).id,
         name: crossword.name,
         size: crossword.size,
         clues: numberedClues,

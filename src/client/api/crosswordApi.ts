@@ -9,18 +9,18 @@ class CrosswordApi {
         return !!crosswords ? crosswords  : [];
     }
 
-    async getByName(name: string) {
-        const crossword = api.get<Crossword>(`crosswords/${name}`);
+    async getById(id: string) {
+        const crossword = api.get<Crossword>(`crosswords/${id}`);
         return !!crossword ? crossword : undefined;
     }
 
-    async getForEditing(name: string) {
-        const crossword = api.get<Crossword>(`crosswords/${name}/edit`);
+    async getForEditing(id: string) {
+        const crossword = api.get<Crossword>(`crosswords/${id}/edit`);
         return !!crossword ? crossword : undefined;
     }
 
-    async getComplete(name: string) {
-        const crossword = api.get<Crossword>(`crosswords/${name}/complete`);
+    async getComplete(id: string) {
+        const crossword = api.get<Crossword>(`crosswords/${id}/complete`);
         return !!crossword ? crossword : undefined;
     }
 

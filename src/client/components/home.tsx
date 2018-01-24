@@ -1,7 +1,6 @@
 import * as React from "react";
 import Crossword from "../../shared/models/crossword";
 import Router from "../components/router";
-import {getEmptyCrosswordFromCrossword} from "../../shared/helpers/crosswordHelper";
 import crosswordApi from "../api/crosswordApi";
 
 interface HomeState {
@@ -21,8 +20,7 @@ export default class Home extends React.Component<{}, HomeState> {
     }
 
     async componentDidMount() {
-        const crosswords = await crosswordApi.getAll();
-        this.setState({crosswords: crosswords});
+        this.syncCrosswords();
     }
     
     render(): JSX.Element {
@@ -43,24 +41,38 @@ export default class Home extends React.Component<{}, HomeState> {
         this.setState({currentCrossword: undefined, shouldCreate: false});
     }
 
-    openCrossword(crossword: Crossword) {
-        this.setState({currentCrossword: getEmptyCrosswordFromCrossword(crossword)});
+    async openCrossword(crossword: Crossword) {
+        const crosswordForSolving = await crosswordApi.getById(crossword.id);
+        if (!!crosswordForSolving) {
+            this.setState({currentCrossword: crosswordForSolving});
+        }
     }
 
     openCrosswordCreator(crossword: Crossword) {
-        this.setState({shouldCreate: true, currentCrossword: crossword});
+        if (!!crossword) {
+            this.openCrosswordCreatorForEditing(crossword);
+        } else {
+            this.setState({shouldCreate: true, currentCrossword: undefined});
+        }
     }
 
-    createCrossword(crossword: Crossword): void {
-        crosswordApi.createOrUpdate(crossword);
-        if (this.state.currentCrossword !== undefined) {
-            this.state.crosswords.splice(this.state.crosswords.indexOf(this.state.currentCrossword), 1);
+    async openCrosswordCreatorForEditing(crossword: Crossword) {
+        const crosswordForEditing = await crosswordApi.getForEditing(crossword.id);
+        if (!!crosswordForEditing) {
+            this.setState({shouldCreate: true, currentCrossword: crosswordForEditing});
+        } else {
+            this.setState({shouldCreate: true, currentCrossword: undefined});
         }
-        this.state.crosswords.push(crossword);
-        this.setState({
-            currentCrossword: undefined,
-            shouldCreate: false,
-            crosswords: this.state.crosswords
-        });
+    }
+
+    async createCrossword(crossword: Crossword) {
+        await crosswordApi.createOrUpdate(crossword)
+        this.setState({shouldCreate: false, currentCrossword: undefined});
+        this.syncCrosswords();
+    }
+
+    async syncCrosswords() {
+        const crosswords = await crosswordApi.getAll();
+        this.setState({crosswords: crosswords});
     }
 }
