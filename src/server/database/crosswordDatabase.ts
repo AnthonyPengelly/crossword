@@ -92,7 +92,6 @@ export default class CrosswordDatabase extends Database<Crossword> {
     }
 
     private generateUniqueId(): string {
-        const id = uuid();
-        return id;
+        return uuid();
     }
 }
