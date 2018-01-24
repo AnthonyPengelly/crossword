@@ -147,9 +147,15 @@ export default class CrosswordCreator extends React.Component<CrosswordCreatorPr
     }
 
     writeAnswerFromClueToGrid(answer: string, clue: Clue): void {
-        const squares = getSquaresForClue(clue, this.state.crossword);
-        for(let i = 0; i < clue.length; i++) {
-            squares[i].letter = answer[i].toUpperCase();
+        const squares = getMaxSquaresForClue(clue, this.state.crossword);
+        const maxLength = !this.state.currentClue
+            ? clue.length
+            : Math.max(clue.length, this.state.currentClue.length);
+        for(let i = 0; i < maxLength; i++) {
+            // If the new clue is smaller than the old, remove any residual letters
+            squares[i].letter = i < answer.length
+                ? answer[i].toUpperCase()
+                : undefined;
         }
     }
 
