@@ -4,6 +4,7 @@ import Database from "./database/database";
 import CrosswordDatabase from "./database/crosswordDatabase";
 import Crossword from "../shared/models/crossword";
 import CrosswordService from "./services/crosswordService";
+import ValidationError from "./errors/validationError";
 
 const database: Database<Crossword> = new CrosswordDatabase();
 const crosswordService = new CrosswordService(database);
@@ -61,7 +62,11 @@ const respondSafely = async (res: express.Response, respondToRequest: () => Prom
         await respondToRequest();
     } catch(error) {
         console.log(error);
-        res.sendStatus(500);
+        if (error instanceof ValidationError) {
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(500);
+        }
     }
 }
 

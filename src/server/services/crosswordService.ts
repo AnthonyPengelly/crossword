@@ -1,9 +1,14 @@
 import Database from "../database/database";
 import Crossword from "../../shared/models/crossword";
 import {getCrosswordForEditing, getEmptyCrosswordFromCrossword} from "../../shared/helpers/crosswordHelper";
+import ValidationService from "./validationService";
 
 export default class CrosswordService {
-    constructor(public crosswordDatabase: Database<Crossword>) {}
+    validationService: ValidationService;
+
+    constructor(public crosswordDatabase: Database<Crossword>) {
+        this.validationService = new ValidationService();
+    }
 
     async getAll() {
         const crosswords = await this.crosswordDatabase.getAll();
@@ -26,6 +31,7 @@ export default class CrosswordService {
     }
 
     createOrUpdate(crossword: Crossword) {
+        this.validationService.validateCrossword(crossword);
         return this.crosswordDatabase.createOrUpdate(crossword);
     }
 
