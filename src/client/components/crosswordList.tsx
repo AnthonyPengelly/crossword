@@ -43,8 +43,14 @@ export default class CrosswordList extends React.Component<{}, CrosswordListStat
                     <br />
                     <Link className="clickable" to={`/crossword/edit/${crossword.id}`}>Edit</Link>
                 </li>
+                <button className="clickable" onClick={() => this.deleteCrossword(crossword)}>Delete</button>
             </React.Fragment>
         );
+    }
+
+    async deleteCrossword(crossword: Crossword): Promise<void> {
+        await crosswordApi.delete(crossword);
+        this.syncCrosswords();
     }
 
     async syncCrosswords(): Promise<void> {

@@ -29,7 +29,7 @@ class CrosswordApi {
     }
 
     async delete(crossword: Crossword) {
-        return api.delete(`crosswords/${crossword.name}`);
+        return api.delete(`crosswords/${crossword.id}`);
     }
 }
 
