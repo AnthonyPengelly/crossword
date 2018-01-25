@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import Home from "./components/home";
+import Router from "./components/router";
 
 ReactDOM.render(
-    <Home />,
+    <Router />,
     document.getElementById("react-body")
 );

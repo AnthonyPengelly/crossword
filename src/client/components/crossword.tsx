@@ -1,4 +1,5 @@
 import * as React from "react";
+import {Link} from "react-router-dom";
 import CrosswordModel from "../../shared/models/crossword";
 import SquareModel from "../../shared/models/square";
 import Clue from "../../shared/models/clue";
@@ -10,10 +11,14 @@ import ClueSolver from "./clueSolver";
 import {getSquaresForClue, getUpdatedAnsweredCluesList} from "../../shared/helpers/clueHelper";
 import {getCluesForSquareIndex} from "../../shared/helpers/squareHelper";
 import {getUpdatedSquaresWithAnswer} from "../../shared/helpers/answerHelper";
+import crosswordApi from "../api/crosswordApi";
 
 interface CrosswordProps {
-    crossword: CrosswordModel;
-    returnToList: () => void;
+    match: {
+        params: {
+            id: string
+        }
+    };
 }
 
 interface CrosswordState {
@@ -25,18 +30,22 @@ interface CrosswordState {
 export default class Crossword extends React.Component<CrosswordProps, CrosswordState> {
     constructor(props: CrosswordProps) {
         super(props);
-        this.state = {selectedClue: undefined, crossword: props.crossword, answeredClues: []};
+        this.state = {selectedClue: undefined, crossword: undefined, answeredClues: []};
         this.selectClue = this.selectClue.bind(this);
         this.selectSquare = this.selectSquare.bind(this);
         this.deselectClue = this.deselectClue.bind(this);
         this.updateAnswer = this.updateAnswer.bind(this);
     }
 
-    componentWillReceiveProps(newProps: CrosswordProps) {
-        this.setState({crossword: newProps.crossword});
+    componentDidMount() {
+        this.getCrossword();
     }
     
     render(): JSX.Element {
+        if (!this.state.crossword) {
+            return <div>Loading</div>;
+        }
+
         let selectedIndices: number[] = [];
         let clueSolver: JSX.Element = undefined;
         if (!!this.state.selectedClue) {
@@ -45,11 +54,11 @@ export default class Crossword extends React.Component<CrosswordProps, Crossword
         }
         return (
             <div>
-                <div className="clickable" onClick={this.props.returnToList}>Return to list</div>
-                <h1>{this.props.crossword.name}</h1>
-                <Grid crossword={this.props.crossword} selectedIndices={selectedIndices} onSquareClick={this.selectSquare} />
+                <Link className="clickable" to="/">Return to list</Link>
+                <h1>{this.state.crossword.name}</h1>
+                <Grid crossword={this.state.crossword} selectedIndices={selectedIndices} onSquareClick={this.selectSquare} />
                 <Clues
-                    clues={this.props.crossword.clues}
+                    clues={this.state.crossword.clues}
                     selectClue={this.selectClue}
                     answeredCluesIndices={this.state.answeredClues}
                 />
@@ -99,5 +108,12 @@ export default class Crossword extends React.Component<CrosswordProps, Crossword
             answeredClues: getUpdatedAnsweredCluesList(this.state.crossword)
         });
         this.deselectClue();
+    }
+
+    async getCrossword() {
+        const crossword = await crosswordApi.getById(this.props.match.params.id);
+        if (!!crossword) {
+            this.setState({crossword: crossword});
+        }
     }
 }

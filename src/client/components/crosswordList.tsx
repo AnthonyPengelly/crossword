@@ -1,26 +1,30 @@
 import * as React from "react";
+import {Link} from "react-router-dom";
 import Crossword from "../../shared/models/crossword";
-import testCrossword from "../testCrossword";
+import crosswordApi from "../api/crosswordApi";
 
-interface CrosswordListProps {
+interface CrosswordListState {
     crosswords: Crossword[];
-    openCrossword: (crossword: Crossword) => void;
-    openCrosswordCreator: (crossword: Crossword) => void;
 }
 
-export default class CrosswordList extends React.Component<CrosswordListProps, {}> {
-    constructor(props: CrosswordListProps) {
+export default class CrosswordList extends React.Component<{}, CrosswordListState> {
+    constructor(props: {}) {
         super(props);
+        this.state = {crosswords: []};
         this.mapCrosswordToListItem = this.mapCrosswordToListItem.bind(this);
+    }
+
+    componentDidMount() {
+        this.syncCrosswords();
     }
     
     render(): JSX.Element {
-        const crosswordList = this.props.crosswords.map(this.mapCrosswordToListItem);
+        const crosswordList = this.state.crosswords.map(this.mapCrosswordToListItem);
         return (
             <div>
-                <div className="clickable" onClick={() => this.props.openCrosswordCreator(undefined)}>
+                <Link className="clickable" to="/crossword/create">
                     Create Crossword
-                </div>
+                </Link>
                 <h1>Crosswords</h1>
                 <ul>
                     {crosswordList}
@@ -32,13 +36,19 @@ export default class CrosswordList extends React.Component<CrosswordListProps, {
     mapCrosswordToListItem(crossword: Crossword, index: number): JSX.Element {
         return (
             <React.Fragment key={index}>
-                <li className="clickable"
-                    onClick={() => this.props.openCrossword(crossword)}
-                >
-                    {index + 1}. {crossword.name} (size: {crossword.size})
+                <li>
+                    <Link className="clickable" to={`/crossword/solve/${crossword.id}`}>
+                        {index + 1}. {crossword.name} (size: {crossword.size})
+                    </Link>
+                    <br />
+                    <Link className="clickable" to={`/crossword/edit/${crossword.id}`}>Edit</Link>
                 </li>
-                <button onClick={() => this.props.openCrosswordCreator(crossword)}>Edit</button>
             </React.Fragment>
         );
+    }
+
+    async syncCrosswords(): Promise<void> {
+        const crosswords = await crosswordApi.getAll();
+        this.setState({crosswords: crosswords});
     }
 }
