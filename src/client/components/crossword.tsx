@@ -55,7 +55,7 @@ export default class Crossword extends React.Component<CrosswordProps, Crossword
             clueSolver = this.renderClueSolver();
         }
         return (
-            <div>
+            <React.Fragment>
                 <Link className="clickable" to="/">Return to list</Link>
                 <h1>{this.state.crossword.name}</h1>
                 <Grid crossword={this.state.crossword} selectedIndices={selectedIndices} onSquareClick={this.selectSquare} />
@@ -66,7 +66,7 @@ export default class Crossword extends React.Component<CrosswordProps, Crossword
                 />
                 {clueSolver}
                 {!this.state.isMarked ? <button onClick={this.completeCrossword}>Finish</button> : undefined}
-            </div>
+            </React.Fragment>
         );
     }
 

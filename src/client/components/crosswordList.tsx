@@ -21,7 +21,7 @@ export default class CrosswordList extends React.Component<{}, CrosswordListStat
     render(): JSX.Element {
         const crosswordList = this.state.crosswords.map(this.mapCrosswordToListItem);
         return (
-            <div>
+            <React.Fragment>
                 <Link className="clickable" to="/crossword/create">
                     Create Crossword
                 </Link>
@@ -29,7 +29,7 @@ export default class CrosswordList extends React.Component<{}, CrosswordListStat
                 <ul>
                     {crosswordList}
                 </ul>
-            </div>
+            </React.Fragment>
         );
     }
 
