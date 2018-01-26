@@ -14,8 +14,11 @@ export default class Api {
             });
     }
 
-    post<T>(path: string, body: T) {
-        axios.post(this.baseUrl + path, body)
+    post<T, TResponse>(path: string, body: T): Promise<void | TResponse> {
+        return axios.post<TResponse>(this.baseUrl + path, body)
+            .then(response =>
+                response.data
+            )
             .catch((err) => {
                 console.log("Failed to post " + path);
                 console.log(err);

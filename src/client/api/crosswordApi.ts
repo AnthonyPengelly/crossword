@@ -10,22 +10,27 @@ class CrosswordApi {
     }
 
     async getById(id: string) {
-        const crossword = api.get<Crossword>(`crosswords/${id}`);
+        const crossword = await api.get<Crossword>(`crosswords/${id}`);
         return !!crossword ? crossword : undefined;
     }
 
     async getForEditing(id: string) {
-        const crossword = api.get<Crossword>(`crosswords/${id}/edit`);
+        const crossword = await api.get<Crossword>(`crosswords/${id}/edit`);
         return !!crossword ? crossword : undefined;
     }
 
     async getComplete(id: string) {
-        const crossword = api.get<Crossword>(`crosswords/${id}/complete`);
+        const crossword = await api.get<Crossword>(`crosswords/${id}/complete`);
         return !!crossword ? crossword : undefined;
     }
 
     async createOrUpdate(crossword: Crossword) {
-        return api.post<Crossword>("crosswords", crossword);
+        return api.post<Crossword, Crossword>("crosswords", crossword);
+    }
+
+    async markCrossword(crossword: Crossword) {
+        const markedCrossword = await api.post<Crossword, Crossword>("crosswords/mark", crossword);
+        return !!markedCrossword ? markedCrossword : undefined;
     }
 
     async delete(crossword: Crossword) {

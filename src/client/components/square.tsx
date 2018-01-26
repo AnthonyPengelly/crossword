@@ -12,7 +12,8 @@ export default class Square extends React.Component<SquareProps, {}> {
     render(): JSX.Element {
         const className = this.props.className 
             + (this.props.square.isBlank ? " square--blank" : "")
-            + (this.props.isSelected ? " square--selected" : "");
+            + (this.props.isSelected ? " square--selected" : "")
+            + (this.props.square.isIncorrect ? " square--incorrect" : "");
         return (
             <div className={className} onClick={() => this.props.onSquareClick()}>
                 <div className="clue-number">{this.props.square.clueNumber}</div>

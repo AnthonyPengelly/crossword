@@ -25,6 +25,7 @@ interface CrosswordState {
     crossword: CrosswordModel;
     answeredClues: number[];
     selectedClue?: Clue;
+    isMarked?: boolean;
 }
 
 export default class Crossword extends React.Component<CrosswordProps, CrosswordState> {
@@ -35,6 +36,7 @@ export default class Crossword extends React.Component<CrosswordProps, Crossword
         this.selectSquare = this.selectSquare.bind(this);
         this.deselectClue = this.deselectClue.bind(this);
         this.updateAnswer = this.updateAnswer.bind(this);
+        this.completeCrossword = this.completeCrossword.bind(this);
     }
 
     componentDidMount() {
@@ -48,7 +50,7 @@ export default class Crossword extends React.Component<CrosswordProps, Crossword
 
         let selectedIndices: number[] = [];
         let clueSolver: JSX.Element = undefined;
-        if (!!this.state.selectedClue) {
+        if (!!this.state.selectedClue && !this.state.isMarked) {
             selectedIndices = this.getSelectedIndices();
             clueSolver = this.renderClueSolver();
         }
@@ -63,6 +65,7 @@ export default class Crossword extends React.Component<CrosswordProps, Crossword
                     answeredCluesIndices={this.state.answeredClues}
                 />
                 {clueSolver}
+                {!this.state.isMarked ? <button onClick={this.completeCrossword}>Finish</button> : undefined}
             </div>
         );
     }
@@ -78,6 +81,16 @@ export default class Crossword extends React.Component<CrosswordProps, Crossword
                 answer={answer}
             />
         );
+    }
+
+    async completeCrossword() {
+        const markedCrossword = await crosswordApi.markCrossword(this.state.crossword);
+        this.setState({
+            crossword: markedCrossword,
+            isMarked: false,
+            selectedClue: undefined,
+            answeredClues: []
+        });
     }
 
     getSelectedIndices(): number[] {

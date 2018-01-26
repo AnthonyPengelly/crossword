@@ -50,6 +50,14 @@ app.post("/api/crosswords", (req, res) => {
     });
 });
 
+app.post("/api/crosswords/mark", (req, res) => {
+    respondSafely(res, async () => {
+        const crossword: Crossword = req.body;
+        const markedCrossword = await crosswordService.getMarkedCrossword(crossword);
+        res.send(markedCrossword);
+    });
+});
+
 app.delete("/api/crosswords/:id", (req, res) => {
     respondSafely(res, async () => {
         await crosswordService.delete(req.params.id);

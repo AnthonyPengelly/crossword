@@ -67,6 +67,10 @@ li {
     background-color: yellow;
 }
 
+.square--incorrect {
+    background-color: lightcoral;
+}
+
 .clues {
     display: inline-block;
 }
