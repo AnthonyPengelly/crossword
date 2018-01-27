@@ -37,7 +37,7 @@ export default class ClueSolver extends React.Component<ClueSolverProps, ClueSol
                     <input type="text" name="answer" autoFocus={true} value={this.state.answer}
                            onChange={this.handleAnswerChange} maxLength={this.props.clue.length} />            
                     <input type="submit" style={{visibility: "hidden"}} />
-                    <button onClick={this.handleSubmit}>Update</button>
+                    <div className="button" onClick={this.handleSubmit}>Update</div>
                 </form>
                 <div>{this.state.message}</div>
             </div>

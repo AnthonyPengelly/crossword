@@ -2,9 +2,24 @@ li {
     list-style: none;
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
 #content {
     max-width: 976px;
     margin: auto;
+}
+
+.crossword-list__crossword {
+    padding: 12px 0;
+    border-top: 1px solid lightgrey;
+}
+
+.crossword-list__crossword-title {
+    font-size: 1.2em;
+    padding-bottom: 12px;
 }
 
 .grid--5 {
@@ -85,4 +100,19 @@ li {
 
 .clickable:hover {
     color: blue;
+}
+
+.button {
+    background-color: white;
+    display: inline-block;
+    border: 1px lightgray solid;
+    border-right-color: gray;
+    border-bottom-color: gray;
+    padding: 0 8px;
+    margin: 0 8px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: lightblue;
 }

@@ -22,13 +22,13 @@ export default class CrosswordList extends React.Component<{}, CrosswordListStat
         const crosswordList = this.state.crosswords.map(this.mapCrosswordToListItem);
         return (
             <React.Fragment>
-                <Link className="clickable" to="/crossword/create">
+                <Link className="button" to="/crossword/create">
                     Create Crossword
                 </Link>
                 <h1>Crosswords</h1>
-                <ul>
+                <div className="crossword-list">
                     {crosswordList}
-                </ul>
+                </div>
             </React.Fragment>
         );
     }
@@ -36,14 +36,14 @@ export default class CrosswordList extends React.Component<{}, CrosswordListStat
     mapCrosswordToListItem(crossword: Crossword, index: number): JSX.Element {
         return (
             <React.Fragment key={index}>
-                <li>
-                    <Link className="clickable" to={`/crossword/solve/${crossword.id}`}>
+                <div className="crossword-list__crossword">
+                    <div className="crossword-list__crossword-title">
                         {index + 1}. {crossword.name} (size: {crossword.size})
-                    </Link>
-                    <br />
-                    <Link className="clickable" to={`/crossword/edit/${crossword.id}`}>Edit</Link>
-                </li>
-                <button className="clickable" onClick={() => this.deleteCrossword(crossword)}>Delete</button>
+                    </div>
+                    <Link className="button" to={`/crossword/solve/${crossword.id}`}>Solve</Link>
+                    <Link className="button" to={`/crossword/edit/${crossword.id}`}>Edit</Link>
+                    <div className="button" onClick={() => this.deleteCrossword(crossword)}>Delete</div>
+                </div>
             </React.Fragment>
         );
     }

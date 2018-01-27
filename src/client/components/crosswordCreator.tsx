@@ -29,7 +29,7 @@ export default class CrosswordCreator extends React.Component<{}, CrosswordCreat
     render(): JSX.Element {
         return (
             <React.Fragment>
-                <Link className="clickable" to="/">Return to list</Link>
+                <Link className="button" to="/">Return to list</Link>
                 <h1>Crossword Creator</h1>
                 {this.getContent()}
             </React.Fragment>

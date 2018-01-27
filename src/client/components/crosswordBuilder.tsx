@@ -62,7 +62,7 @@ export default class CrosswordBuilder extends React.Component<CrosswordBuilderPr
                 <Grid crossword={this.state.crossword} selectedIndices={this.getSelectedIndices()} onSquareClick={this.selectSquare} />
                 <Clues clues={this.state.crossword.clues} selectClue={this.selectClue} answeredCluesIndices={[]} />
                 {this.renderClueEditor()}
-                <button onClick={this.completeCrossword}>Save</button>
+                <div className="button" onClick={this.completeCrossword}>Save</div>
             </React.Fragment>
         );
     }
