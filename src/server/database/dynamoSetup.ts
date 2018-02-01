@@ -1,13 +1,8 @@
 import * as AWS from "aws-sdk";
 import {DynamoDB} from "aws-sdk";
+import Config from "../config";
 
 export default function initialiseDynamo(): DynamoDB.DocumentClient {
-    AWS.config.update({
-        region: "eu-west-1",
-        accessKeyId: "akid",
-        secretAccessKey: "secret"
-    });
-    return new DynamoDB.DocumentClient({
-        endpoint: "http://localhost:8000"
-    });
+    AWS.config.update(Config.awsConfig);
+    return new DynamoDB.DocumentClient(Config.dynamoDbConfig);
 }

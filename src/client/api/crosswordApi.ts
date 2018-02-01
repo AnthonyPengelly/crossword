@@ -38,5 +38,5 @@ class CrosswordApi {
     }
 }
 
-const api = new Api("http://localhost:3000/api/");
+const api = new Api("https://e7vek1i6vh.execute-api.eu-west-2.amazonaws.com/test/");
 export default new CrosswordApi(api);

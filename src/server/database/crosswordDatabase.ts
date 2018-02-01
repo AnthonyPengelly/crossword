@@ -3,10 +3,11 @@ import * as uuid from "uuid/v1";
 import Database from "./database";
 import Crossword from "../../shared/models/crossword";
 import initialiseDatabase from "./dynamoSetup";
+import Config from "../config";
 
 export default class CrosswordDatabase extends Database<Crossword> {
     private database: DynamoDB.DocumentClient;
-    static TABLE_NAME = "Crosswords";
+    static TABLE_NAME = "Crosswords" + Config.databaseSuffix;
 
     constructor() {
         super();
