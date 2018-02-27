@@ -12,6 +12,7 @@ import {getSquaresForClue, getUpdatedAnsweredCluesList} from "../../shared/helpe
 import {getCluesForSquareIndex} from "../../shared/helpers/squareHelper";
 import {getUpdatedSquaresWithAnswer} from "../../shared/helpers/answerHelper";
 import crosswordApi from "../api/crosswordApi";
+import { getScorePercentageForMarkedCrossword } from "../../shared/helpers/scoreHelper";
 
 interface CrosswordProps {
     match: {
@@ -26,6 +27,7 @@ interface CrosswordState {
     answeredClues: number[];
     selectedClue?: Clue;
     isMarked?: boolean;
+    score?: number;
 }
 
 export default class Crossword extends React.Component<CrosswordProps, CrosswordState> {
@@ -58,6 +60,7 @@ export default class Crossword extends React.Component<CrosswordProps, Crossword
             <React.Fragment>
                 <Link className="clickable" to="/">Return to list</Link>
                 <h1>{this.state.crossword.name}</h1>
+                {this.state.isMarked ? <h2>Score: {this.state.score.toFixed(1)}%</h2> : undefined}
                 <Grid crossword={this.state.crossword} selectedIndices={selectedIndices} onSquareClick={this.selectSquare} />
                 <Clues
                     clues={this.state.crossword.clues}
@@ -87,9 +90,10 @@ export default class Crossword extends React.Component<CrosswordProps, Crossword
         const markedCrossword = await crosswordApi.markCrossword(this.state.crossword);
         this.setState({
             crossword: markedCrossword,
-            isMarked: false,
+            isMarked: true,
             selectedClue: undefined,
-            answeredClues: []
+            answeredClues: [],
+            score: getScorePercentageForMarkedCrossword(markedCrossword)
         });
     }
 
