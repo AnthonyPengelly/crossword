@@ -1,3 +1,8 @@
+@import "breakpoints";
+@import "mixins";
+@import "utilityClasses";
+@import "components/index";
+
 li {
     list-style: none;
 }
@@ -10,109 +15,4 @@ a {
 #content {
     max-width: 976px;
     margin: auto;
-}
-
-.crossword-list__crossword {
-    padding: 12px 0;
-    border-top: 1px solid lightgrey;
-}
-
-.crossword-list__crossword-title {
-    font-size: 1.2em;
-    padding-bottom: 12px;
-}
-
-.grid--5 {
-    width: 200px;
-}
-
-.grid--8 {
-    width: 320px;
-}
-
-.grid--10 {
-    width: 400px;
-}
-
-.grid--12 {
-    width: 480px;
-}
-
-.grid--16 {
-    width: 640px;
-}
-
-.grid--20 {
-    width: 800px;
-}
-
-.grid {
-    vertical-align: top;
-    display: inline-block;
-    margin-right: 16px;
-    margin-top: 32px;
-    border: 1px solid black;
-}
-
-.square {
-    display: inline-block;
-    height: 38px;
-    width: 38px;
-    line-height: 38px;
-    position: relative;
-    text-align: center;
-    vertical-align: top;
-    border: 1px solid black;
-    cursor: pointer;
-}
-
-.clue-number {
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    font-size: 10px;
-    line-height: 12px;
-}
-
-.square--blank {
-    background-color: black;
-}
-
-.square--selected {
-    background-color: yellow;
-}
-
-.square--incorrect {
-    background-color: lightcoral;
-}
-
-.clues {
-    display: inline-block;
-}
-
-.clue--answered {
-    text-decoration: line-through;
-}
-
-.clickable {
-    cursor: pointer;
-}
-
-.clickable:hover {
-    color: blue;
-}
-
-.button {
-    background-color: white;
-    display: inline-block;
-    border: 1px lightgray solid;
-    border-right-color: gray;
-    border-bottom-color: gray;
-    padding: 0 8px;
-    margin: 0 8px;
-    cursor: pointer;
-}
-
-.button:hover {
-    background-color: lightblue;
 }

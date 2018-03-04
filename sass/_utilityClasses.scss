@@ -1,0 +1,22 @@
+.clickable {
+    cursor: pointer;
+}
+
+.clickable:hover {
+    color: blue;
+}
+
+.button {
+    background-color: white;
+    display: inline-block;
+    border: 1px lightgray solid;
+    border-right-color: gray;
+    border-bottom-color: gray;
+    padding: 0 8px;
+    margin: 0 8px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: lightblue;
+}

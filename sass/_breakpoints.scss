@@ -1,0 +1,20 @@
+$max-mobile-size: 600px;
+$max-tablet-size: 992px;
+
+@mixin mobile() {
+    @media (max-width: $max-mobile-size) {
+        @content;
+    }
+}
+
+@mixin tablet() {
+    @media (min-width: $max-mobile-size + 1) and (max-width: $max-tablet-size) {
+        @content;
+    }
+}
+
+@mixin desktop() {
+    @media (min-width: $max-tablet-size + 1) {
+        @content;
+    }
+}
