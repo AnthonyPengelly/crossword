@@ -1,3 +1,21 @@
-install:
-  npm install
-  npm run build
+install: npm install npm run build
+deploy:
+  - provider: s3
+    access_key_id: "$ACCESS_KEY_ID"
+    secret_access_key: "$SECRET_ACCESS_KEY"
+    region: eu-west-2
+    bucket: crossword-builds
+    upload-dir: $TRAVIS_REPO_SLUG/$ENVIRONMENT/$TRAVIS_COMMIT
+    local_dir: ./dist
+  - provider: s3
+    access_key_id: "$ACCESS_KEY_ID"
+    secret_access_key: "$SECRET_ACCESS_KEY"
+    region: eu-west-2
+    bucket: crosswords-bucket-test
+    local_dir: ./dist/public
+
+
+env:
+  global:
+  - secure: VbeVux2a3F23k/LZuzTg73ffoorPkP4LeSTjVnIR4JMMMp1bNJShu7v1WA9Krrmvi1GRst07C3FsbzMUiQHu8FEFm549h9uzQTtZ7xeMyGy0IlH5naJJVrn1rDdnaroELPIcT4o8/MP88xrd5KtJLSVJjb4ykxDXAWnfBpDjczvN8iSJ+YK20+oosbI+DmqkItLQPxgnwGkfTkhKiWPs1TTmSeYMsiocgXwgTe5SBdkLrVlzsLi3ixseYj3SUnYqvbpP4lh/WcvQmQ8TvyvQ0GJRDesEM1aDpFARSzqbo7zjhBoXoO7ZsfBz8wl0FO5MkKzhut2o3q3ywdb+GK5gCgwtWjSXk1r4FGQ+Is6Q8nmQOny7RyliB/7DQXN9GuqSnM+9jTwQjixMd4VMPNey9SHngNCILrox8OQz6lpCsFLk7rWkOE3GTSzvQuQe3HNIwJEHMRqJl93l5PzO3uLiP21T2N4BCmj5hGbS+BwtLVZLUeCdRY4PJZDTrYp/u0qNYXlZ8fPZoi2qfuzP8ydVfvGK1n8vNGzXrJkvvjVNipbPajbp33iHTDJPdMy19mgdk7jkMlYvoNA33xRKVwEdFVNGyCqiIujyVQWX+5HuHWsbgrXu2hGpVL4OLQ8jESOjG/H8gEAVTRtML8fedrjaGMp1CcmKjjgl1zDw+UDxAhM=
+  - secure: MoSdkPhevf4hvvfr9TDYGf7SVQSPksYYxwej4eM+7WnzXgZtxnJEqfz2t19AcQWXFvKlT/18Y/7Ru2K2WtztpS5ZlbIYBkPncm636lHzbSbv81ix3HhfWN3faKYqO39hkyGpgIvU0G/8E/7q9kt7B7JhVIYrg5sfcxrVsb9mE/dO2AnahufB6HjTfPJSy29+UXxDxh0Aw/qOHRIfRHqVoejD0PjVAt7r7a0nN5cbO5QQdp30lD72T4FbFL+9CLXq1AoN3eEL2rySKLWgoVdnOIWv/e3y/yd4VqJZzS/7nT8caI3ND8ewlBPQWy2geVC/gfiF26WEYU0AnQVLde4oauG+krxbTMiNHIF5pahRW4QgrBaHKxlDJ+okgWxcP28UtMZ7GqICfWdFWm76eXHAnzu9I24Qnz8rnVGcoK2j+/RJwCURTpf6tDiKzB93NV575COt9oA5jWiefkGy09vqZrr411OuiVD4Ei+1Oynh+qpz/P8paQdYoyO+aHU5vKYYyEqHuA6Zo6XTGbE2d8tiOzjaH4Pk/rGvbgo7/CC+B1cBv2qAl6orSMm9Er15naJBAo9BziL/LS8B3Pr9OzxztbTHScEi/+7ZWyyNd3O6e6CcwCGoQrawfjFYjpYIVYm/5XY1+3fCRwSYvlePp+KSTq6yE9tAcKjBN0kwp5hcIGo=
