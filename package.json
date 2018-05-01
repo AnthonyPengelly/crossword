@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run webpack && npm run sass && node dist/bundle.server.js",
+    "build": "npm run sass && npm run compileClient && npm run compileLambda",
     "sass": "node-sass sass/ -o dist/public/",
     "sass-watch": "node-sass -w sass/ -o dist/public/",
     "webpack": "npm run compileClient && npm run compileServer",
