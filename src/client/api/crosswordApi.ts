@@ -38,5 +38,7 @@ class CrosswordApi {
     }
 }
 
-const api = new Api("https://e7vek1i6vh.execute-api.eu-west-2.amazonaws.com/test/");
+// __API_URL__ is injected at compile time by the webpack DefinePlugin
+declare var __API_URL__: string;
+const api = new Api(__API_URL__);
 export default new CrosswordApi(api);

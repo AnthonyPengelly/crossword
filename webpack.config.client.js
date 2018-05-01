@@ -1,3 +1,23 @@
+const webpack = require("webpack");
+
+const DEV_API = "http://localhost:3000/api/";
+const TEST_API = "https://e7vek1i6vh.execute-api.eu-west-2.amazonaws.com/test/";
+const LIVE_API = "https://e7vek1i6vh.execute-api.eu-west-2.amazonaws.com/live/";
+
+const environment = process.env.ENVIRONMENT;
+let apiUrl;
+
+switch (environment) {
+    case "live":
+        apiUrl = LIVE_API;
+        break;
+    case "test":
+        apiUrl = TEST_API;
+        break;
+    default:
+        apiUrl = DEV_API;
+}
+
 module.exports = {
     entry: "./src/client/index.tsx",
     output: {
@@ -12,6 +32,12 @@ module.exports = {
         // Add '.ts' and '.tsx' as resolvable extensions.
         extensions: [".ts", ".tsx", ".js", ".json"]
     },
+
+    plugins: [ 
+        new webpack.DefinePlugin({
+            __API_URL__: JSON.stringify(apiUrl)
+        })
+    ],
 
     module: {
         rules: [
