@@ -29,6 +29,7 @@ deploy:
     runtime: "nodejs6.10"
     handler_name: "handler"
     zip: "./dist/bundle.lambda.js"
+    skip_cleanup: true
     on:
       branch: master
 
