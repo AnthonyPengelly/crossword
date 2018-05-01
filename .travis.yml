@@ -2,8 +2,6 @@
 script: ./scripts/build.sh
 deploy:
   - provider: s3
-    access_key_id: "$ACCESS_KEY_ID"
-    secret_access_key: "$SECRET_ACCESS_KEY"
     region: eu-west-2
     bucket: crossword-builds
     upload-dir: $TRAVIS_REPO_SLUG/test/$TRAVIS_COMMIT
@@ -12,12 +10,19 @@ deploy:
     on:
       branch: master
   - provider: s3
-    access_key_id: "$ACCESS_KEY_ID"
-    secret_access_key: "$SECRET_ACCESS_KEY"
     region: eu-west-2
     bucket: crosswords-bucket-test
     local_dir: ./dist/public
     skip_cleanup: true
+    on:
+      branch: master
+  - provider: lambda
+    function_name: "crosswordApi-test"
+    region: "eu-west-2"
+    role: "arn:aws:iam::055700101518:role/service-role/crosswordApiLambda"
+    runtime: "nodejs6.10"
+    handler_name: "handler"
+    zip: "./dist/bundle.lambda.js"
     on:
       branch: master
 
