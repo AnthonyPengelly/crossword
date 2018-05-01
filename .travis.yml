@@ -10,13 +10,14 @@ deploy:
     bucket: crossword-builds
     upload-dir: $TRAVIS_REPO_SLUG/$ENVIRONMENT/$TRAVIS_COMMIT
     local_dir: ./dist
+    skip_cleanup: true
   - provider: s3
     access_key_id: "$ACCESS_KEY_ID"
     secret_access_key: "$SECRET_ACCESS_KEY"
     region: eu-west-2
     bucket: crosswords-bucket-test
     local_dir: ./dist/public
-
+    skip_cleanup: true
 
 env:
   global:
