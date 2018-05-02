@@ -25,8 +25,8 @@ deploy:
   role: arn:aws:iam::055700101518:role/service-role/crosswordApiLambda
   runtime: nodejs6.10
   handler_name: handler
-  module_name: bundle.lambda
-  zip: "$TRAVIS_BUILD_DIR/dist/bundle.lambda.js"
+  module_name: lambda
+  zip: "$TRAVIS_BUILD_DIR/dist/lambda.js"
   skip_cleanup: true
   on:
     branch: master

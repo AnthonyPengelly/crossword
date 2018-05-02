@@ -3,7 +3,7 @@ const nodeExternals = require('webpack-node-externals');
 module.exports = {
     entry: "./src/server/lambda.ts",
     output: {
-        filename: "bundle.lambda.js",
+        filename: "lambda.js",
         library: "crossword",
         libraryTarget: "umd",
         path: __dirname + "/dist"
